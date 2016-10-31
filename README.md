@@ -26,3 +26,5 @@ If you happen to be running my Pi Btc Weather Clock (https://github.com/jakeday/
 ## Credit
 
 Project is a cleaned up, slimmed down, and enhanced version of WinkPost (https://github.com/davidgruhin/WinkPost).
+
+Bitcoin donations appreciated! 1JkpbAJ41W6SUjH9vCRDpHNNpecjPK3Zid
