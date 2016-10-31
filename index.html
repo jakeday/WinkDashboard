@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Wink Dashboard</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+		<script type="text/javascript" src="js/config.js"></script>
+		<script type="text/javascript" src="js/wink.js"></script>
+		<script type="text/javascript" src="js/dhtmlxslider.js"></script>
+
+		<link rel="stylesheet" href="js/dhtmlxslider_dhx_skyblue.css">
+		<link rel="stylesheet" href="js/dhtmlxslider_dhx_web.css">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+		<link href="css/dashboard.css" rel="stylesheet">
+
+		<script src="js/holder.js"></script>
+		<script type="text/javascript" src="js/scrollfix.js"></script>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#"><img src="png/ic_device_wink_add.png" /> Wink Dashboard</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a id="winkResult"></a>
+							<span class="glyphicon glyphicon-refresh" aria-hidden="true" alt="Refresh" onclick="fetchDevices()"></span>
+							<a href="" id="weather">
+								<span class="glyphicon glyphicon-cloud" aria-hidden="true" alt="Weather"></span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12 main">
+					<div class="row panel panel-default">
+						<div class="panel-heading">Devices</div>
+						<div class="table-responsive">
+							<table class="table table-striped" id="winkTable">
+								<thead>
+									<tr>
+										<th>Type</th>
+										<th>Description</th>
+										<th>Switch</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+								<tbody id="winkDevices">
+									<tr>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,186 @@
+* {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+body {
+	padding-top: 50px;
+	background-color: #eee;
+}
+
+.sub-header {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+}
+
+.navbar-fixed-top {
+	border: 0;
+}
+
+.main {
+	padding: 20px;
+}
+
+@media (min-width: 768px) {
+	.main {
+		padding-right: 40px;
+		padding-left: 40px;
+	}
+}
+
+.main .page-header {
+	margin-top: 0;
+}
+
+.placeholders {
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.placeholders h4 {
+	margin-bottom: 0;
+}
+
+.placeholder {
+	margin-bottom: 20px;
+}
+
+.placeholder img {
+	display: inline-block;
+	border-radius: 50%;
+}
+
+.table-responsive {
+	border: 1px solid #ececec;
+}
+
+.navbar-brand>img {
+	display: inline;
+	width: 23px;
+}
+
+#lightbulb {
+	max-width: 48px;
+}
+
+#hub {
+	max-width: 48px;
+}
+
+.nav .glyphicon-refresh {
+	color: white;
+	display: inline-block;
+	font-size: 25px;
+	top: 6px;
+	margin-right: 15px;
+	cursor: pointer;
+}
+
+.nav .glyphicon-refresh:hover {
+	color: #00b8f1;
+	transition: ease all 0.5s;
+}
+
+.nav .glyphicon-cloud {
+	color: white;
+	font-size: 25px;
+	top: 6px;
+	margin-right: 5px;
+	cursor: pointer;
+}
+
+#weather {
+	display: none;
+}
+
+#winkResult {
+	display: inline-block;
+}
+
+td[id*='Desc'] div {
+	line-height: 40px;
+}
+
+.fixed {
+	position: fixed;
+	top: 50px;
+	background: #fff;
+	padding-top: 10px;
+	margin-bottom: 0px;
+	border-bottom: 2px solid #ececec;
+	margin-right: -40px;
+	margin-left: -40px;
+	width: 84%;
+	z-index: 30;
+}
+
+.fixed:before {
+	-webkit-filter: blur(5px);
+}
+
+.dhtmlxslider_dhx_web .dhxsl_runner {
+	background-color: #00B8F1;
+	border: 1px solid #00b8f1;
+	border-radius: 50%;
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	top: -12px !important;
+}
+
+.panel-default .panel-heading {
+	background-color: #ddd;
+	background-image: none;
+	font-size: 24px;
+	font-weight: bold;
+	text-indent: -6px;
+}
+
+.dhtmlxslider_dhx_web .dhxsl_container {
+	float: none;
+}
+
+#winkstats {
+	padding: 20px;
+	padding-top: 0px;
+}
+
+#winkstats li {
+	font-size: 11px;
+}
+
+.status {
+	float: right;
+	text-transform: capitalize;
+}
+
+.systemname {
+	text-transform: capitalize;
+	font-weight: bold;
+}
+
+.operational .status {
+	color: green;
+}
+
+.partialoutage .status {
+	color: orange;
+}
+
+.investigating .status {
+	color: purple;
+}
+
+th,td {
+	padding: 5px;
+}
+
+title {
+	padding-top: 5px;
+}
+
+img {
+	vertical-align: middle;
+}
