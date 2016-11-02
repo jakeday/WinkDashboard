@@ -2,6 +2,7 @@ var nLight = [];
 var divLights = [];
 var mySliderLight = [];
 var controlWinks = [];
+var groupWinks = [];
 
 $(function() {
 	fillBody();
@@ -15,7 +16,89 @@ function checkWeather() {
 	}
 }
 
-function getWinkRow(wink, row) {
+function populateWinkGroup(wink, row) {
+	var strDeviceType = wink.members[0].object_type;
+
+	switch(strDeviceType){
+		case 'light_bulb':
+			var wink_children = [];
+
+			for (device in controlWinks) {
+				for (member in wink.members) {
+					if (controlWinks[device].light_bulb_id == wink.members[member].object_id) {
+						wink_children.push(controlWinks[device]);
+					}
+				}
+			}
+
+			var cell = document.getElementById("GroupState" + row);
+			var state = document.createElement("img");
+			var bPowered = wink_children[0].desired_state.powered;
+			state.id = "lightbulb";
+			state.src = "png/lights/" + bPowered + ".png";
+			state.alt = bPowered;
+			cell.appendChild(state);
+			var cell = document.getElementById("GroupDesc" + row);
+			var divDesc = document.createElement('div');
+			divDesc.style.width = 60;
+			var span = document.createElement("span");
+			divDesc.appendChild(span);
+			divDesc.appendChild(document.createTextNode(wink.name));
+			cell.appendChild(divDesc);
+			var cell = document.getElementById("GroupSwitch" + row);
+			if(wink_children[0].desired_state.powered)
+				nLight[row] = (wink_children[0].desired_state.brightness) * 100;
+			else
+				nLight[row] = 0;
+			mySliderLight[row] = new dhtmlXSlider({
+				parent: "GroupSwitch" + row,
+				value: nLight[row],
+				tooltip: true,
+				skin: "dhx_web",
+				size: 150, 
+				step: 10,
+				min: 0,
+				max: 100
+				});
+			var lineNext = document.createElement("BR");
+			cell.appendChild(lineNext);
+			var temp_bg = document.createElement("img");
+			temp_bg.src = "png/lights/lightlegend.gif";
+			temp_bg.style.paddingTop = "5px";
+			temp_bg.style.align = "left";
+			cell.appendChild(temp_bg);
+			if(mySliderLight.length > 0) {
+				mySliderLight[row].attachEvent("onSlideEnd", function(newLight){
+					for (child_wink in wink_children)
+						setDevice('light_bulbs', wink_children[child_wink].light_bulb_id, newLight);
+				});
+			}
+			var cell = document.getElementById("DeviceCurrent" + row);
+			var divDesc = document.createElement('div');
+			divDesc.style.width = 60;
+			var span = document.createElement("span");
+			divDesc.appendChild(span);
+			divDesc.appendChild(document.createTextNode(nLight[row] + "%"));
+			cell.appendChild(divDesc);
+			break;
+		default:
+			var cell = document.getElementById("GroupState" + row);
+			var state = document.createElement("img");
+			state.src = "png/lights/na.png";
+			state.alt = 'not light';
+			var cell = document.getElementById("GroupDesc" + row);
+			var divDesc = document.createElement('div');
+			divDesc.style.width = 60;
+			divDesc.appendChild(document.createTextNode(wink.name));
+			cell.appendChild(divDesc);
+			var cell = document.getElementById("GroupSwitch" + row);
+			break;
+	}
+
+	return;
+}
+
+function populateWinkDevice(wink, row) {
 	if('hub_id' in wink)
 		strDeviceType = 'hubs';
 
@@ -34,28 +117,28 @@ function getWinkRow(wink, row) {
 
 	switch(strDeviceType){
 		case 'light_bulbs':
-			var cell = document.getElementById("State" + row);
+			var cell = document.getElementById("DeviceState" + row);
 			var state = document.createElement("img");
 			var bPowered = wink.desired_state.powered;
 			state.id = "lightbulb";
 			state.src = "png/lights/" + bPowered + ".png";
 			state.alt = bPowered;
 			cell.appendChild(state);
-			var cell = document.getElementById("Desc" + row);
+			var cell = document.getElementById("DeviceDesc" + row);
 			var divDesc = document.createElement('div');
 			divDesc.style.width = 60;
 			var span = document.createElement("span");
 			divDesc.appendChild(span);
 			divDesc.appendChild(document.createTextNode(wink.name));
 			cell.appendChild(divDesc);
-			var cell = document.getElementById("Switch" + row);
+			var cell = document.getElementById("DeviceSwitch" + row);
 			var wink_id = wink.light_bulb_id;
 			if(wink.desired_state.powered)
 				nLight[row] = (wink.desired_state.brightness) * 100;
 			else
 				nLight[row] = 0;
 			mySliderLight[row] = new dhtmlXSlider({
-				parent: "Switch" + row,
+				parent: "DeviceSwitch" + row,
 				value: nLight[row],
 				tooltip: true,
 				skin: "dhx_web",
@@ -76,7 +159,7 @@ function getWinkRow(wink, row) {
 					setDevice('light_bulbs', wink_id, newLight);
 				});
 			}
-			var cell = document.getElementById("Current" + row);
+			var cell = document.getElementById("DeviceCurrent" + row);
 			var divDesc = document.createElement('div');
 			divDesc.style.width = 60;
 			var span = document.createElement("span");
@@ -86,18 +169,18 @@ function getWinkRow(wink, row) {
 			break;
 
 		case 'locks':
-			var cell = document.getElementById("State" + row);
+			var cell = document.getElementById("DeviceState" + row);
 			var img = document.createElement("img");
 			img.src = "png/locks/ic_device_locks_selection.png";
 			img.width = 48;
 			img.height = 48;
 			cell.appendChild(img);
-			var cell = document.getElementById("Desc" + row);
+			var cell = document.getElementById("DeviceDesc" + row);
 			var divDesc = document.createElement('div');
 			divDesc.style.width = 60;
 			divDesc.appendChild(document.createTextNode(wink.name));
 			cell.appendChild(divDesc);
-			var cell = document.getElementById("Switch" + row);
+			var cell = document.getElementById("DeviceSwitch" + row);
 			if(wink.desired_state.locked)
 				nLock = 1;
 			else
@@ -122,7 +205,7 @@ function getWinkRow(wink, row) {
 			mySliderLight[row].attachEvent("onSlideEnd", function(newLock){
 				setDevice('locks', wink.lock_id, newLock);
 			});
-			var cell = document.getElementById("Current" + row);
+			var cell = document.getElementById("DeviceCurrent" + row);
 			var divDesc = document.createElement('div');
 			var state = document.createElement("img");
 			state.src = "png/locks/"+ wink.desired_state.locked + ".png";
@@ -131,7 +214,7 @@ function getWinkRow(wink, row) {
 			break;
 
 		case 'thermostats':
-			var cell = document.getElementById("State" + row);
+			var cell = document.getElementById("DeviceState" + row);
 			var nTemp = wink.desired_state.max_set_point;
 			nTemp = (nTemp * 1.8) + 32; // COMMENT THIS LINE OUT FOR CELSIUS
 			var img = document.createElement("img");
@@ -139,12 +222,12 @@ function getWinkRow(wink, row) {
 			img.width = 48;
 			img.height = 48;
 			cell.appendChild(img);
-			var cell = document.getElementById("Desc" + row);
+			var cell = document.getElementById("DeviceDesc" + row);
 			var divDesc = document.createElement('div');
 			divDesc.style.width = 60;
 			divDesc.appendChild(document.createTextNode(wink.name));
 			cell.appendChild(divDesc);
-			var cell = document.getElementById("Switch" + row);
+			var cell = document.getElementById("DeviceSwitch" + row);
 			var nTemp = wink.desired_state.max_set_point;
 			nTemp = (nTemp * 1.8) + 32;
 			mySliderLight[row] = new dhtmlXSlider({
@@ -166,7 +249,7 @@ function getWinkRow(wink, row) {
 				newTemp = (newTemp - 32)/1.8;
 				setDevice("thermostat_id", wink.thermostat_id, newTemp);
 			});
-			var cell = document.getElementById("Current" + row);
+			var cell = document.getElementById("DeviceCurrent" + row);
 			var divDesc = document.createElement('div');
 			divDesc.style.width = 60;
 			var span = document.createElement("span");
@@ -178,7 +261,7 @@ function getWinkRow(wink, row) {
 		case 'hubs':
 			updateHub(wink, row);
 			window.setInterval(function(){updateHub(wink, row)}, 30000);
-			var cell = document.getElementById("Desc" + row);
+			var cell = document.getElementById("DeviceDesc" + row);
 			var divDesc = document.createElement('div');
 			divDesc.style.width = 60;
 			var span = document.createElement("span");
@@ -188,14 +271,14 @@ function getWinkRow(wink, row) {
 			break;
 
 		case 'sensor_pods':
-			var cell = document.getElementById("State" + row);
+			var cell = document.getElementById("DeviceState" + row);
 			var state = document.createElement("img");
 			state.src = "png/sensors/sensor.png";
 			state.width = 48;
 			state.height = 48;
 			state.alt = 'N/A';
 			cell.appendChild(state);
-			var cell = document.getElementById("Desc" + row);
+			var cell = document.getElementById("DeviceDesc" + row);
 			var divDesc = document.createElement('div');
 			divDesc.style.width = 60;
 			divDesc.appendChild(document.createTextNode(wink.name));
@@ -204,12 +287,12 @@ function getWinkRow(wink, row) {
 			break;
 
 		case 'propane_tanks':
-			var cell = document.getElementById("State" + row);
+			var cell = document.getElementById("DeviceState" + row);
 			var state = document.createElement("img");
 			state.src = "png/sensors/na.png";
 			state.alt = 'N/A';
 			cell.appendChild(state);
-			var cell = document.getElementById("Desc" + row);
+			var cell = document.getElementById("DeviceDesc" + row);
 			var divDesc = document.createElement('div');
 			divDesc.style.width = 60;
 			var img = document.createElement("img");
@@ -223,19 +306,19 @@ function getWinkRow(wink, row) {
 			break;
 
 		case 'smoke_detectors':
-			var cell = document.getElementById("State" + row);
+			var cell = document.getElementById("DeviceState" + row);
 			var state = document.createElement("img");
 			state.src = "png/sensors/smokealarm.png";
 			state.alt = 'N/A';
 			cell.appendChild(state);
-			var cell = document.getElementById("Desc" + row);
+			var cell = document.getElementById("DeviceDesc" + row);
 			var divDesc = document.createElement('div');
 			divDesc.style.width = 60;
 			var span = document.createElement("span");
 			divDesc.appendChild(span);
 			divDesc.appendChild(document.createTextNode(wink.name));
 			cell.appendChild(divDesc);
-			var cell = document.getElementById("Switch" + row);
+			var cell = document.getElementById("DeviceSwitch" + row);
 			var imgBattery = document.createElement('img');
 			if(wink.last_reading.battery > .8)
 				imgBattery.src = 'png/battery/battery_100.png';
@@ -252,16 +335,16 @@ function getWinkRow(wink, row) {
 			break;
 
 		default:
-			var cell = document.getElementById("State" + row).className += "hideme";
+			var cell = document.getElementById("DeviceState" + row).className += "hideme";
 			var state = document.createElement("img");
 			state.src = "png/lights/na.png";
 			state.alt = 'not light';
-			var cell = document.getElementById("Desc" + row);
+			var cell = document.getElementById("DeviceDesc" + row);
 			var divDesc = document.createElement('div');
 			divDesc.style.width = 60;
 			divDesc.appendChild(document.createTextNode(wink.name));
 			cell.appendChild(divDesc);
-			var cell = document.getElementById("Switch" + row);
+			var cell = document.getElementById("DeviceSwitch" + row);
 	}
 
 	return;
@@ -281,15 +364,6 @@ function getCookie(cname) {
 }
 
 function fillBody() {
-	/*var xhr = new XMLHttpRequest();
-
-	var username = wink_username;
-	var password = wink_password;
-	var clientid = 'quirky_wink_android_app';
-	var clientsecret = 'e749124ad386a5a35c0ab554a4f2c045';
-	var sendstring = "{\"client_id\":\"" + clientid + "\",\"client_secret\":\"" + clientsecret + "\",\"username\":\"" + username + "\",\"password\":\"" + password + "\",\"grant_type\":\"password\"}";*/
-
-
 	$.ajax({
 		method: "POST",
 		url: "https://winkapi.quirky.com/oauth2/token",
@@ -313,19 +387,19 @@ function fillBody() {
 	});
 }
 
-function createRows(row){
+function createRows(row, type){
 	var result = document.createElement("tr");
 	td = document.createElement("td");
-	td.id = "State" + row;
+	td.id = type + "State" + row;
 	result.appendChild(td);
 	var td = document.createElement("td");
-	td.id = "Desc" + row;
+	td.id = type + "Desc" + row;
 	result.appendChild(td);
 	var td = document.createElement("td");
-	td.id = "Switch" + row;
+	td.id = type + "Switch" + row;
 	result.appendChild(td);
 	var td = document.createElement("td");
-	td.id = "Current" + row;
+	td.id = type + "Current" + row;
 	result.appendChild(td);
 
 	return result;
@@ -334,7 +408,7 @@ function createRows(row){
 function updateSensors(wink, row) {
 	document.getElementById("winkResult").innerHTML = "Updating Sensor Status...";
 
-	var cell = document.getElementById("Switch" + row);
+	var cell = document.getElementById("DeviceSwitch" + row);
 	var divSensor = document.createElement('div');
 	var imgBattery = document.createElement('img');
 
@@ -390,7 +464,7 @@ function updateSensors(wink, row) {
 function updateRefuel(wink, row) {
 	document.getElementById("winkResult").innerHTML = "Updating Refuel Status...";
 
-	var cell = document.getElementById("Switch" + row);
+	var cell = document.getElementById("DeviceSwitch" + row);
 	var divSensor = document.createElement('div');
 	var imgBattery = document.createElement('img');
 
@@ -438,7 +512,7 @@ function updateHub(wink, row) {
 		ws.onerror = function(error){
 			ws.close();
 			ws = null;
-			var cell = document.getElementById("State" + row);
+			var cell = document.getElementById("DeviceState" + row);
 			cell.innerHTML = "";
 			var state = document.createElement("img");
 			state.src = "png/hub/true.png";
@@ -451,7 +525,7 @@ function updateHub(wink, row) {
 			if(ws != null){
 				ws.close();
 				ws = null;
-				var cell = document.getElementById("State" + row);
+				var cell = document.getElementById("DeviceState" + row);
 				cell.innerHTML = "";
 				var state = document.createElement("img");
 				state.src = "png/hub/false.png";
@@ -465,6 +539,48 @@ function updateHub(wink, row) {
 		alert("WebSocket are not supported");
 
 	document.getElementById("winkResult").innerHTML = "Found "+ controlWinks.length + " Wink devices";
+}
+
+function fetchGroups() {
+	document.getElementById("winkResult").innerHTML = "Fetching...";
+
+	$.ajax({
+		method: "GET",
+		url: "https://winkapi.quirky.com/users/me/groups",
+		dataType: "json",
+		async: true,
+		crossDomain: true,
+		headers: { "Authorization": "Bearer " + AccessToken }
+	})
+	.done(function(winks, textStatus, jqXHR) {
+		if (jqXHR.status != 200) {
+			document.getElementById("winkResult").innerHTML = "Error Calling Wink REST API " + jqXHR.status + " " + jqXHR.statusText;
+			return;
+		}
+		else {
+			document.getElementById("winkResult").innerHTML = "Calling Wink REST API";
+
+			var tbody = document.createElement("tbody");
+			var numWinks = 0;
+			groupWinks = [];
+
+			for (var i = 0; i < winks.data.length; i++) {
+				groupWinks.push(winks.data[i]);
+				tbody.appendChild(createRows(numWinks, "Group"));
+				++numWinks;
+			}
+
+			var winkGroupsTable = document.getElementById("winkGroupsTable");
+			winkGroupsTable.replaceChild(tbody, document.getElementById("winkGroups"));
+			tbody.setAttribute("id", "winkGroups");
+
+			for (var i = 0; i < groupWinks.length; i++) {
+				populateWinkGroup(groupWinks[i], i);
+			}
+
+			sortTable("winkGroupsTable");
+		}
+	});
 }
 
 function fetchDevices() {
@@ -492,29 +608,30 @@ function fetchDevices() {
 
 			for (var i = 0; i < winks.data.length; i++) {
 				controlWinks.push(winks.data[i]);
-				tbody.appendChild(createRows(numWinks));
+				tbody.appendChild(createRows(numWinks, "Device"));
 				++numWinks;
 			}
 
 			document.getElementById("winkResult").innerHTML = "Found " + controlWinks.length + " Wink devices";
-			var winkTable = document.getElementById("winkTable");
-			winkTable.replaceChild(tbody, document.getElementById("winkDevices"));
+			var winkDevicesTable = document.getElementById("winkDevicesTable");
+			winkDevicesTable.replaceChild(tbody, document.getElementById("winkDevices"));
 			tbody.setAttribute("id", "winkDevices");
 
 			for (var i = 0; i < controlWinks.length; i++) {
-				getWinkRow(controlWinks[i], i);
-			
+				populateWinkDevice(controlWinks[i], i);
 			}
 
-			sortDevices();
+			sortTable("winkDevicesTable");
+
+			fetchGroups();
 		}
 
 		window.setTimeout(function(){fetchDevices()},60000);
 	});
 }
 
-function sortDevices() {
-	var $tbody = $('#winkTable tbody');
+function sortTable(id) {
+	var $tbody = $('#' + id + ' tbody');
 	$tbody.find('tr').sort(function(a,b) {
 		var tda = $(a).find('td:eq(1)').text();
 		var tdb = $(b).find('td:eq(1)').text();
