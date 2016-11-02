@@ -73,7 +73,7 @@ function populateWinkGroup(wink, row) {
 						setDevice('light_bulbs', wink_children[child_wink].light_bulb_id, newLight);
 				});
 			}
-			var cell = document.getElementById("DeviceCurrent" + row);
+			var cell = document.getElementById("GroupCurrent" + row);
 			var divDesc = document.createElement('div');
 			divDesc.style.width = 60;
 			var span = document.createElement("span");
