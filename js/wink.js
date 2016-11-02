@@ -21,77 +21,15 @@ function populateWinkGroup(wink, row) {
 
 	switch(strDeviceType){
 		case 'light_bulb':
-			var wink_children = [];
-
-			for (device in controlWinks) {
-				for (member in wink.members) {
-					if (controlWinks[device].light_bulb_id == wink.members[member].object_id) {
-						wink_children.push(controlWinks[device]);
-					}
-				}
-			}
-
-			var cell = document.getElementById("GroupState" + row);
-			var state = document.createElement("img");
-			var bPowered = wink_children[0].desired_state.powered;
-			state.id = "lightbulb";
-			state.src = "png/lights/" + bPowered + ".png";
-			state.alt = bPowered;
-			cell.appendChild(state);
-			var cell = document.getElementById("GroupDesc" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			var span = document.createElement("span");
-			divDesc.appendChild(span);
-			divDesc.appendChild(document.createTextNode(wink.name));
-			cell.appendChild(divDesc);
-			var cell = document.getElementById("GroupSwitch" + row);
-			if(wink_children[0].desired_state.powered)
-				nLight[row] = (wink_children[0].desired_state.brightness) * 100;
-			else
-				nLight[row] = 0;
-			mySliderLight[row] = new dhtmlXSlider({
-				parent: "GroupSwitch" + row,
-				value: nLight[row],
-				tooltip: true,
-				skin: "dhx_web",
-				size: 150, 
-				step: 10,
-				min: 0,
-				max: 100
-				});
-			var lineNext = document.createElement("BR");
-			cell.appendChild(lineNext);
-			var temp_bg = document.createElement("img");
-			temp_bg.src = "png/lights/lightlegend.gif";
-			temp_bg.style.paddingTop = "5px";
-			temp_bg.style.align = "left";
-			cell.appendChild(temp_bg);
-			if(mySliderLight.length > 0) {
-				mySliderLight[row].attachEvent("onSlideEnd", function(newLight){
-					for (child_wink in wink_children)
-						setDevice('light_bulbs', wink_children[child_wink].light_bulb_id, newLight);
-				});
-			}
-			var cell = document.getElementById("GroupCurrent" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			var span = document.createElement("span");
-			divDesc.appendChild(span);
-			divDesc.appendChild(document.createTextNode(nLight[row] + "%"));
-			cell.appendChild(divDesc);
+			addLightBuld(wink, row);
 			break;
+
+		case 'lock':
+			addLock(wink, row);
+			break;
+
 		default:
-			var cell = document.getElementById("GroupState" + row);
-			var state = document.createElement("img");
-			state.src = "png/lights/na.png";
-			state.alt = 'not light';
-			var cell = document.getElementById("GroupDesc" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			divDesc.appendChild(document.createTextNode(wink.name));
-			cell.appendChild(divDesc);
-			var cell = document.getElementById("GroupSwitch" + row);
+			addDefaultDevice(wink, row);
 			break;
 	}
 
@@ -117,250 +55,384 @@ function populateWinkDevice(wink, row) {
 
 	switch(strDeviceType){
 		case 'light_bulbs':
-			var cell = document.getElementById("DeviceState" + row);
-			var state = document.createElement("img");
-			var bPowered = wink.desired_state.powered;
-			state.id = "lightbulb";
-			state.src = "png/lights/" + bPowered + ".png";
-			state.alt = bPowered;
-			cell.appendChild(state);
-			var cell = document.getElementById("DeviceDesc" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			var span = document.createElement("span");
-			divDesc.appendChild(span);
-			divDesc.appendChild(document.createTextNode(wink.name));
-			cell.appendChild(divDesc);
-			var cell = document.getElementById("DeviceSwitch" + row);
-			var wink_id = wink.light_bulb_id;
-			if(wink.desired_state.powered)
-				nLight[row] = (wink.desired_state.brightness) * 100;
-			else
-				nLight[row] = 0;
-			mySliderLight[row] = new dhtmlXSlider({
-				parent: "DeviceSwitch" + row,
-				value: nLight[row],
-				tooltip: true,
-				skin: "dhx_web",
-				size: 150, 
-				step: 10,
-				min: 0,
-				max: 100
-				});
-			var lineNext = document.createElement("BR");
-			cell.appendChild(lineNext);
-			var temp_bg = document.createElement("img");
-			temp_bg.src = "png/lights/lightlegend.gif";
-			temp_bg.style.paddingTop = "5px";
-			temp_bg.style.align = "left";
-			cell.appendChild(temp_bg);
-			if(mySliderLight.length > 0) {
-				mySliderLight[row].attachEvent("onSlideEnd", function(newLight){
-					setDevice('light_bulbs', wink_id, newLight);
-				});
-			}
-			var cell = document.getElementById("DeviceCurrent" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			var span = document.createElement("span");
-			divDesc.appendChild(span);
-			divDesc.appendChild(document.createTextNode(nLight[row] + "%"));
-			cell.appendChild(divDesc);
+			addLightBuld(wink, row);
 			break;
 
 		case 'locks':
-			var cell = document.getElementById("DeviceState" + row);
-			var img = document.createElement("img");
-			img.src = "png/locks/ic_device_locks_selection.png";
-			img.width = 48;
-			img.height = 48;
-			cell.appendChild(img);
-			var cell = document.getElementById("DeviceDesc" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			divDesc.appendChild(document.createTextNode(wink.name));
-			cell.appendChild(divDesc);
-			var cell = document.getElementById("DeviceSwitch" + row);
-			if(wink.desired_state.locked)
-				nLock = 1;
-			else
-				nLock = 0;
-			mySliderLight[row] = new dhtmlXSlider({
-				parent: cell, 
-				size: 150, 
-				skin: "dhx_web",
-				tooltip: true,
-				vertical: false, 
-				min: 0,
-				max: 1,
-				value: nLock,
-				step: 1});
-			var lineNext = document.createElement("BR");
-			cell.appendChild(lineNext);
-			var temp_bg = document.createElement("img");
-			temp_bg.style.paddingTop = "5px";
-			temp_bg.src = "png/locks/locklegend.png";
-			temp_bg.style.align = 'left';
-			cell.appendChild(temp_bg);
-			mySliderLight[row].attachEvent("onSlideEnd", function(newLock){
-				setDevice('locks', wink.lock_id, newLock);
-			});
-			var cell = document.getElementById("DeviceCurrent" + row);
-			var divDesc = document.createElement('div');
-			var state = document.createElement("img");
-			state.src = "png/locks/"+ wink.desired_state.locked + ".png";
-			divDesc.appendChild(state);
-			cell.appendChild(divDesc);
+			addLock(wink, row);
 			break;
 
 		case 'thermostats':
-			var cell = document.getElementById("DeviceState" + row);
-			var nTemp = wink.desired_state.max_set_point;
-			nTemp = (nTemp * 1.8) + 32; // COMMENT THIS LINE OUT FOR CELSIUS
-			var img = document.createElement("img");
-			img.src = "png/thermostat/ic_device_thermostat_selection.png";
-			img.width = 48;
-			img.height = 48;
-			cell.appendChild(img);
-			var cell = document.getElementById("DeviceDesc" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			divDesc.appendChild(document.createTextNode(wink.name));
-			cell.appendChild(divDesc);
-			var cell = document.getElementById("DeviceSwitch" + row);
-			var nTemp = wink.desired_state.max_set_point;
-			nTemp = (nTemp * 1.8) + 32;
-			mySliderLight[row] = new dhtmlXSlider({
-				parent: cell, 
-				size: 150, 
-				skin: "dhx_web",
-				tooltip: true,
-				vertical: false, 
-				min: 50,
-				max: 80,
-				value: nTemp,
-				step: 1});
-			var lineNext = document.createElement("BR");
-			var temp_bg = document.createElement("img");
-			temp_bg.style.paddingTop = "5px";
-			temp_bg.src = "png/thermostat/thermostatlegend.png";
-			cell.appendChild(temp_bg);
-			mySliderLight[row].attachEvent("onSlideEnd", function(newTemp){
-				newTemp = (newTemp - 32)/1.8;
-				setDevice("thermostat_id", wink.thermostat_id, newTemp);
-			});
-			var cell = document.getElementById("DeviceCurrent" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			var span = document.createElement("span");
-			divDesc.appendChild(span);
-			divDesc.appendChild(document.createTextNode(nTemp + "\xB0"));
-			cell.appendChild(divDesc);
+			addThermostat(wink, row);
 			break;
 
 		case 'hubs':
-			updateHub(wink, row);
-			window.setInterval(function(){updateHub(wink, row)}, 30000);
-			var cell = document.getElementById("DeviceDesc" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			var span = document.createElement("span");
-			divDesc.appendChild(span);
-			divDesc.appendChild(document.createTextNode(wink.name));
-			cell.appendChild(divDesc);
+			addHub(wink, row);
 			break;
 
 		case 'sensor_pods':
-			var cell = document.getElementById("DeviceState" + row);
-			var state = document.createElement("img");
-			state.src = "png/sensors/sensor.png";
-			state.width = 48;
-			state.height = 48;
-			state.alt = 'N/A';
-			cell.appendChild(state);
-			var cell = document.getElementById("DeviceDesc" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			divDesc.appendChild(document.createTextNode(wink.name));
-			cell.appendChild(divDesc);
-			updateSensors(wink, row);
+			addSensorPod(wink, row);
 			break;
 
 		case 'propane_tanks':
-			var cell = document.getElementById("DeviceState" + row);
-			var state = document.createElement("img");
-			state.src = "png/sensors/na.png";
-			state.alt = 'N/A';
-			cell.appendChild(state);
-			var cell = document.getElementById("DeviceDesc" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			var img = document.createElement("img");
-			img.src = "png/sensors/sensor.png";
-			img.width = 64;
-			img.height = 64;
-			divDesc.appendChild(img);
-			divDesc.appendChild(document.createTextNode(wink.name));
-			cell.appendChild(divDesc);
-			updateRefuel(wink, row);
+			addPropaneTank(wink, row);
 			break;
 
 		case 'smoke_detectors':
-			var cell = document.getElementById("DeviceState" + row);
-			var state = document.createElement("img");
-			state.src = "png/sensors/smokealarm.png";
-			state.alt = 'N/A';
-			cell.appendChild(state);
-			var cell = document.getElementById("DeviceDesc" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			var span = document.createElement("span");
-			divDesc.appendChild(span);
-			divDesc.appendChild(document.createTextNode(wink.name));
-			cell.appendChild(divDesc);
-			var cell = document.getElementById("DeviceSwitch" + row);
-			var imgBattery = document.createElement('img');
-			if(wink.last_reading.battery > .8)
-				imgBattery.src = 'png/battery/battery_100.png';
-			if((wink.last_reading.battery <= .8) && (wink.last_reading.battery > .6))
-				imgBattery.src = 'pgn/battery/battery_75.png';
-			if((wink.last_reading.battery <= .6) && (wink.last_reading.battery > .3))
-				imgBattery.src = 'pgn/battery/battery_50.png';
-			if((wink.last_reading.battery <= .3) && (wink.last_reading.battery > .15))
-				imgBattery.src = 'pgn/battery/battery_75.png';
-			if((wink.last_reading.battery <= .15) && (wink.last_reading.battery > 0))
-				imgBattery.src = 'pgn/battery/battery_10.png';
-			imgBattery.alt = wink.last_reading.battery;
-			cell.appendChild(imgBattery);
+			addSmokeDetector(wink, row);
 			break;
 
 		default:
-			var cell = document.getElementById("DeviceState" + row).className += "hideme";
-			var state = document.createElement("img");
-			state.src = "png/lights/na.png";
-			state.alt = 'not light';
-			var cell = document.getElementById("DeviceDesc" + row);
-			var divDesc = document.createElement('div');
-			divDesc.style.width = 60;
-			divDesc.appendChild(document.createTextNode(wink.name));
-			cell.appendChild(divDesc);
-			var cell = document.getElementById("DeviceSwitch" + row);
+			addDefaultDevice(wink, row);
+			break;
 	}
 
 	return;
 }
 
-function getCookie(cname) {
-	var name = cname + "=";
-	var ca = document.cookie.split(';');
+function addHub(product, row) {
+	var wink = product;
+	var name = product.name;
+	var prefix = "Device";
 
-	for (var i = 0; i < ca.length; i++) {
-		var c = ca[i].trim();
-		if (c.indexOf(name) == 0)
-			return c.substring(name.length, c.length);
+	if ('members' in product) {
+		prefix = "Group";
 	}
 
-	return "";
+	updateHub(wink, row);
+	window.setInterval(function(){updateHub(wink, row)}, 30000);
+	var cell = document.getElementById(prefix + "Desc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	var span = document.createElement("span");
+	divDesc.appendChild(span);
+	divDesc.appendChild(document.createTextNode(name));
+	cell.appendChild(divDesc);
+}
+
+function addLightBuld(product, row) {
+	var wink = product;
+	var name = product.name;
+	var prefix = "Device";
+
+	if ('members' in product) {
+		var wink_children = [];
+
+		for (device in controlWinks) {
+			for (member in product.members) {
+				if (controlWinks[device].light_bulb_id == product.members[member].object_id) {
+					wink_children.push(controlWinks[device]);
+				}
+			}
+		}
+
+		wink = wink_children[0];
+		prefix = "Group";
+	}
+
+	var cell = document.getElementById(prefix + "State" + row);
+	var state = document.createElement("img");
+	var bPowered = wink.desired_state.powered;
+	state.id = "lightbulb";
+	state.src = "png/lights/" + bPowered + ".png";
+	state.alt = bPowered;
+	cell.appendChild(state);
+	var cell = document.getElementById(prefix + "Desc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	var span = document.createElement("span");
+	divDesc.appendChild(span);
+	divDesc.appendChild(document.createTextNode(name));
+	cell.appendChild(divDesc);
+	var cell = document.getElementById(prefix + "Switch" + row);
+	if(wink.desired_state.powered)
+		nLight[row] = (wink.desired_state.brightness) * 100;
+	else
+		nLight[row] = 0;
+		mySliderLight[row] = new dhtmlXSlider({
+			parent: prefix + "Switch" + row,
+			value: nLight[row],
+			tooltip: true,
+			skin: "dhx_web",
+			size: 150, 
+			step: 10,
+			min: 0,
+			max: 100
+		});
+	var lineNext = document.createElement("BR");
+	cell.appendChild(lineNext);
+	var temp_bg = document.createElement("img");
+	temp_bg.src = "png/lights/lightlegend.gif";
+	temp_bg.style.paddingTop = "5px";
+	temp_bg.style.align = "left";
+	cell.appendChild(temp_bg);
+	if(mySliderLight.length > 0) {
+		mySliderLight[row].attachEvent("onSlideEnd", function(newLight){
+			if ('members' in product) {
+				for (child_wink in wink_children)
+					setDevice('light_bulbs', wink_children[child_wink].light_bulb_id, newLight);
+			}
+			else
+				setDevice('light_bulbs', wink.light_bulb_id, newLight);
+		});
+	}
+	var cell = document.getElementById(prefix + "Current" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	var span = document.createElement("span");
+	divDesc.appendChild(span);
+	divDesc.appendChild(document.createTextNode(nLight[row] + "%"));
+	cell.appendChild(divDesc);
+}
+
+function addLock(product, row) {
+	var wink = product;
+	var name = product.name;
+	var prefix = "Device";
+
+	if ('members' in product) {
+		var wink_children = [];
+
+		for (device in controlWinks) {
+			for (member in product.members) {
+				if (controlWinks[device].lock_id == product.members[member].object_id) {
+					wink_children.push(controlWinks[device]);
+				}
+			}
+		}
+
+		wink = wink_children[0];
+		prefix = "Group";
+	}
+
+	var cell = document.getElementById(prefix + "State" + row);
+	var img = document.createElement("img");
+	img.src = "png/locks/ic_device_locks_selection.png";
+	img.width = 48;
+	img.height = 48;
+	cell.appendChild(img);
+	var cell = document.getElementById(prefix + "Desc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	divDesc.appendChild(document.createTextNode(name));
+	cell.appendChild(divDesc);
+	var cell = document.getElementById(prefix + "Switch" + row);
+	if(wink.desired_state.locked)
+		nLock = 1;
+	else
+		nLock = 0;
+	mySliderLight[row] = new dhtmlXSlider({
+		parent: cell,
+		size: 150,
+		skin: "dhx_web",
+		tooltip: true,
+		vertical: false,
+		min: 0,
+		max: 1,
+		value: nLock,
+		step: 1
+	});
+	var lineNext = document.createElement("BR");
+	cell.appendChild(lineNext);
+	var temp_bg = document.createElement("img");
+	temp_bg.style.paddingTop = "5px";
+	temp_bg.src = "png/locks/locklegend.png";
+	temp_bg.style.align = 'left';
+	cell.appendChild(temp_bg);
+	mySliderLight[row].attachEvent("onSlideEnd", function(newLock){
+		if ('members' in product) {
+			for (child_wink in wink_children)
+				setDevice('locks', wink_children[child_wink].lock_id, newLight);
+		}
+		else
+			setDevice('locks', wink.lock_id, newLock);
+	});
+	var cell = document.getElementById(prefix + "Current" + row);
+	var divDesc = document.createElement('div');
+	var state = document.createElement("img");
+	state.src = "png/locks/"+ wink.desired_state.locked + ".png";
+	divDesc.appendChild(state);
+	cell.appendChild(divDesc);
+}
+
+function addThermostat(product, row) {
+	var wink = product;
+	var name = product.name;
+	var prefix = "Device";
+
+	if ('members' in product) {
+		prefix = "Group";
+	}
+
+	var cell = document.getElementById(prefix + "State" + row);
+	var nTemp = wink.desired_state.max_set_point;
+	nTemp = (nTemp * 1.8) + 32; // COMMENT THIS LINE OUT FOR CELSIUS
+	var img = document.createElement("img");
+	img.src = "png/thermostat/ic_device_thermostat_selection.png";
+	img.width = 48;
+	img.height = 48;
+	cell.appendChild(img);
+	var cell = document.getElementById(prefix + "Desc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	divDesc.appendChild(document.createTextNode(name));
+	cell.appendChild(divDesc);
+	var cell = document.getElementById(prefix + "Switch" + row);
+	var nTemp = wink.desired_state.max_set_point;
+	nTemp = (nTemp * 1.8) + 32;
+	mySliderLight[row] = new dhtmlXSlider({
+		parent: cell,
+		size: 150,
+		skin: "dhx_web",
+		tooltip: true,
+		vertical: false,
+		min: 50,
+		max: 80,
+		value: nTemp,
+		step: 1
+	});
+	var lineNext = document.createElement("BR");
+	var temp_bg = document.createElement("img");
+	temp_bg.style.paddingTop = "5px";
+	temp_bg.src = "png/thermostat/thermostatlegend.png";
+	cell.appendChild(temp_bg);
+	mySliderLight[row].attachEvent("onSlideEnd", function(newTemp){
+		newTemp = (newTemp - 32)/1.8;
+		setDevice("thermostat_id", wink.thermostat_id, newTemp);
+	});
+	var cell = document.getElementById(prefix + "Current" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	var span = document.createElement("span");
+	divDesc.appendChild(span);
+	divDesc.appendChild(document.createTextNode(nTemp + "\xB0"));
+	cell.appendChild(divDesc);
+}
+
+function addSensorPod(product, row) {
+	var wink = product;
+	var name = product.name;
+	var prefix = "Device";
+
+	if ('members' in product) {
+		var wink_children = [];
+
+		for (device in controlWinks) {
+			for (member in product.members) {
+				if (controlWinks[device].sensor_pod_id == product.members[member].object_id) {
+					wink_children.push(controlWinks[device]);
+				}
+			}
+		}
+
+		wink = wink_children[0];
+		prefix = "Group";
+	}
+
+	var cell = document.getElementById(prefix + "State" + row);
+	var state = document.createElement("img");
+	state.src = "png/sensors/sensor.png";
+	state.width = 48;
+	state.height = 48;
+	state.alt = 'N/A';
+	cell.appendChild(state);
+	var cell = document.getElementById(prefix + "Desc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	divDesc.appendChild(document.createTextNode(name));
+	cell.appendChild(divDesc);
+
+	if ('members' in product) {
+		for (child_wink in wink_children)
+			updateSensors(wink_children[child_wink], row);
+	}
+	else
+		updateSensors(wink, row);
+}
+
+function addPropaneTank(product, row) {
+	var wink = product;
+	var name = product.name;
+	var prefix = "Device";
+
+	if ('members' in product) {
+		prefix = "Group";
+	}
+
+	var cell = document.getElementById(prefix + "State" + row);
+	var state = document.createElement("img");
+	state.src = "png/sensors/na.png";
+	state.alt = 'N/A';
+	cell.appendChild(state);
+	var cell = document.getElementById(prefix + "Desc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	var img = document.createElement("img");
+	img.src = "png/sensors/sensor.png";
+	img.width = 64;
+	img.height = 64;
+	divDesc.appendChild(img);
+	divDesc.appendChild(document.createTextNode(name));
+	cell.appendChild(divDesc);
+	updateRefuel(wink, row);
+}
+
+function addSmokeDetector(product, row) {
+	var wink = product;
+	var name = product.name;
+	var prefix = "Device";
+
+	if ('members' in product) {
+		prefix = "Group";
+	}
+
+	var cell = document.getElementById(prefix + "State" + row);
+	var state = document.createElement("img");
+	state.src = "png/sensors/smokealarm.png";
+	state.alt = 'N/A';
+	cell.appendChild(state);
+	var cell = document.getElementById(prefix + "Desc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	var span = document.createElement("span");
+	divDesc.appendChild(span);
+	divDesc.appendChild(document.createTextNode(name));
+	cell.appendChild(divDesc);
+	var cell = document.getElementById(prefix + "Switch" + row);
+	var imgBattery = document.createElement('img');
+	if(wink.last_reading.battery > .8)
+		imgBattery.src = 'png/battery/battery_100.png';
+	if((wink.last_reading.battery <= .8) && (wink.last_reading.battery > .6))
+		imgBattery.src = 'pgn/battery/battery_75.png';
+	if((wink.last_reading.battery <= .6) && (wink.last_reading.battery > .3))
+		imgBattery.src = 'pgn/battery/battery_50.png';
+	if((wink.last_reading.battery <= .3) && (wink.last_reading.battery > .15))
+		imgBattery.src = 'pgn/battery/battery_75.png';
+	if((wink.last_reading.battery <= .15) && (wink.last_reading.battery > 0))
+		imgBattery.src = 'pgn/battery/battery_10.png';
+	imgBattery.alt = wink.last_reading.battery;
+	cell.appendChild(imgBattery);
+}
+
+function addDefaultDevice(product, row) {
+	var wink = product;
+	var name = product.name;
+	var prefix = "Device";
+
+	if ('members' in product) {
+		prefix = "Group";
+	}
+
+	var cell = document.getElementById(prefix + "State" + row);
+	var state = document.createElement("img");
+	state.src = "png/lights/na.png";
+	state.alt = 'not light';
+	var cell = document.getElementById(prefix + "Desc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	divDesc.appendChild(document.createTextNode(name));
+	cell.appendChild(divDesc);
+	var cell = document.getElementById(prefix + "Switch" + row);
 }
 
 function fillBody() {
