@@ -19,19 +19,27 @@ $(function() {
 	});
 });
 
+function isLocalStorageSupported() {
+	return 'localStorage' in window && window['localStorage'] !== null;
+}
+
 function saveScrollPosition() {
-	localStorage.setItem("scrollposition", $(window).scrollTop());
+	if (isLocalStorageSupported())
+		localStorage.setItem("scrollposition", $(window).scrollTop());
 }
 
 function getScrollPosition() {
-	if (localStorage.getItem("scrollposition"))
-		return parseInt(localStorage.getItem("scrollposition"));
-	else
-		return 0;
+	if (isLocalStorageSupported()) {
+		if (localStorage.getItem("scrollposition"))
+			return parseInt(localStorage.getItem("scrollposition"));
+		else
+			return 0;
+	}
 }
 
 function restoreScrollPoisition() {
-	$(window).scrollTop(getScrollPosition());
+	if (isLocalStorageSupported())
+		$(window).scrollTop(getScrollPosition());
 }
 
 function checkWeather() {
