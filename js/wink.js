@@ -136,6 +136,8 @@ function addLightBuld(product, row) {
 	state.id = "lightbulb";
 	state.src = "png/lights/" + bPowered + ".png";
 	state.alt = bPowered;
+	state.width = 48;
+	state.height = 48;
 	cell.appendChild(state);
 	var cell = document.getElementById(prefix + "Desc" + row);
 	var divDesc = document.createElement('div');
@@ -162,9 +164,11 @@ function addLightBuld(product, row) {
 	var lineNext = document.createElement("BR");
 	cell.appendChild(lineNext);
 	var temp_bg = document.createElement("img");
-	temp_bg.src = "png/lights/lightlegend.gif";
+	temp_bg.src = "png/lights/lightlegend.png";
 	temp_bg.style.paddingTop = "5px";
 	temp_bg.style.align = "left";
+	temp_bg.width = 150;
+	temp_bg.height = 14;
 	cell.appendChild(temp_bg);
 	if(mySliderLight.length > 0) {
 		mySliderLight[row].attachEvent("onSlideEnd", function(newLight){
@@ -207,7 +211,7 @@ function addLock(product, row) {
 
 	var cell = document.getElementById(prefix + "State" + row);
 	var img = document.createElement("img");
-	img.src = "png/locks/ic_device_locks_selection.png";
+	img.src = "png/locks/locks.png";
 	img.width = 48;
 	img.height = 48;
 	cell.appendChild(img);
@@ -238,6 +242,8 @@ function addLock(product, row) {
 	temp_bg.style.paddingTop = "5px";
 	temp_bg.src = "png/locks/locklegend.png";
 	temp_bg.style.align = 'left';
+	temp_bg.width = 150;
+	temp_bg.height = 14;
 	cell.appendChild(temp_bg);
 	mySliderLight[row].attachEvent("onSlideEnd", function(newLock){
 		if ('members' in product) {
@@ -251,6 +257,8 @@ function addLock(product, row) {
 	var divDesc = document.createElement('div');
 	var state = document.createElement("img");
 	state.src = "png/locks/"+ wink.desired_state.locked + ".png";
+	state.width = 24;
+	state.height = 24;
 	divDesc.appendChild(state);
 	cell.appendChild(divDesc);
 }
@@ -268,7 +276,7 @@ function addThermostat(product, row) {
 	var nTemp = wink.desired_state.max_set_point;
 	nTemp = (nTemp * 1.8) + 32; // COMMENT THIS LINE OUT FOR CELSIUS
 	var img = document.createElement("img");
-	img.src = "png/thermostat/ic_device_thermostat_selection.png";
+	img.src = "png/thermostat/thermostat.png";
 	img.width = 48;
 	img.height = 48;
 	cell.appendChild(img);
@@ -295,6 +303,8 @@ function addThermostat(product, row) {
 	var temp_bg = document.createElement("img");
 	temp_bg.style.paddingTop = "5px";
 	temp_bg.src = "png/thermostat/thermostatlegend.png";
+	temp_bg.width = 150;
+	temp_bg.height = 14;
 	cell.appendChild(temp_bg);
 	mySliderLight[row].attachEvent("onSlideEnd", function(newTemp){
 		newTemp = (newTemp - 32)/1.8;
@@ -363,6 +373,8 @@ function addPropaneTank(product, row) {
 	var state = document.createElement("img");
 	state.src = "png/sensors/na.png";
 	state.alt = 'N/A';
+	state.width = 48;
+	state.height = 48;
 	cell.appendChild(state);
 	var cell = document.getElementById(prefix + "Desc" + row);
 	var divDesc = document.createElement('div');
@@ -390,6 +402,8 @@ function addSmokeDetector(product, row) {
 	var state = document.createElement("img");
 	state.src = "png/sensors/smokealarm.png";
 	state.alt = 'N/A';
+	state.width = 48;
+	state.height = 48;
 	cell.appendChild(state);
 	var cell = document.getElementById(prefix + "Desc" + row);
 	var divDesc = document.createElement('div');
@@ -411,6 +425,8 @@ function addSmokeDetector(product, row) {
 	if((wink.last_reading.battery <= .15) && (wink.last_reading.battery > 0))
 		imgBattery.src = 'pgn/battery/battery_10.png';
 	imgBattery.alt = wink.last_reading.battery;
+	imgBattery.width = 32;
+	imgBattery.height = 32;
 	cell.appendChild(imgBattery);
 }
 
@@ -427,6 +443,8 @@ function addDefaultDevice(product, row) {
 	var state = document.createElement("img");
 	state.src = "png/lights/na.png";
 	state.alt = 'not light';
+	state.width = 48;
+	state.height = 48;
 	var cell = document.getElementById(prefix + "Desc" + row);
 	var divDesc = document.createElement('div');
 	divDesc.style.width = 60;
@@ -496,6 +514,8 @@ function updateSensors(wink, row) {
 		imgBattery.src = 'pgn/battery/battery_10.png';
 
 	imgBattery.alt = wink.last_reading.battery;
+	imgBattery.width = 32;
+	imgBattery.height = 32;
 	divSensor.appendChild(imgBattery);
 	imgOpened = document.createElement('img');
 
@@ -528,6 +548,9 @@ function updateSensors(wink, row) {
 			imgOpened.src = 'png/sensors/sensors_small_cabinet_closed.png';
 	}
 
+	imgOpened.width = 32;
+	imgOpened.height = 32;
+
 	divSensor.appendChild(imgOpened);
 	cell.appendChild(divSensor);
 	document.getElementById("winkResult").innerHTML = "Found " + controlWinks.length + " Wink devices";
@@ -552,6 +575,8 @@ function updateRefuel(wink, row) {
 		imgBattery.src = 'pgn/battery/battery_10.png';
 
 	imgBattery.alt = wink.last_reading.battery;
+	imgBattery.width = 32;
+	imgBattery.height = 32;
 	divSensor.appendChild(imgBattery);
 	var imgRefuel = document.createElement('img');
 
@@ -569,6 +594,8 @@ function updateRefuel(wink, row) {
 		imgRefuel.src = 'pgn/refuel/ic_refuel_0.png';
 
 	imgRefuel.alt = wink.last_reading.battery;
+	imgRefuel.width = 32;
+	imgRefuel.height = 32;
 	divSensor.appendChild(imgRefuel);
 	cell.appendChild(divSensor);
 
@@ -590,6 +617,8 @@ function updateHub(wink, row) {
 			state.src = "png/hub/true.png";
 			state.alt = "On-Line";
 			state.id = "hub";
+			state.width = 48;
+			state.height = 48;
 			cell.appendChild(state);
 		};
 
@@ -603,6 +632,8 @@ function updateHub(wink, row) {
 				state.src = "png/hub/false.png";
 				state.alt = "Off-Line";
 				state.id = "hub";
+				state.width = 48;
+				state.height = 48;
 				cell.appendChild(state);
 			}
 		}, 2000);

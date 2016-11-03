@@ -7,12 +7,7 @@
 
 body {
 	padding-top: 50px;
-	background-color: #eee;
-}
-
-.sub-header {
-	padding-bottom: 10px;
-	border-bottom: 1px solid #eee;
+	background-color: #383838;
 }
 
 .navbar-fixed-top {
@@ -20,7 +15,7 @@ body {
 }
 
 .main {
-	padding: 20px;
+	padding: 15px;
 }
 
 @media (min-width: 768px) {
@@ -30,43 +25,20 @@ body {
 	}
 }
 
-.main .page-header {
-	margin-top: 0;
-}
-
-.placeholders {
-	margin-bottom: 30px;
-	text-align: center;
-}
-
-.placeholders h4 {
-	margin-bottom: 0;
-}
-
-.placeholder {
-	margin-bottom: 20px;
-}
-
-.placeholder img {
-	display: inline-block;
-	border-radius: 50%;
-}
-
 .table-responsive {
 	border: 1px solid #ececec;
 }
 
+.navbar .container-fluid .navbar-brand {
+	margin-left: 30px;
+}
+
 .navbar-brand>img {
+	top: 0px;
+	left: 0px;
+	position: absolute;
 	display: inline;
-	width: 23px;
-}
-
-#lightbulb {
-	max-width: 48px;
-}
-
-#hub {
-	max-width: 48px;
+	width: 50px;
 }
 
 .nav .glyphicon-refresh {
@@ -99,78 +71,38 @@ body {
 	display: inline-block;
 }
 
-td[id*='Desc'] div {
-	line-height: 40px;
+.panel-default {
+	border-color: #777;
 }
 
-.fixed {
-	position: fixed;
-	top: 50px;
-	background: #fff;
-	padding-top: 10px;
-	margin-bottom: 0px;
-	border-bottom: 2px solid #ececec;
-	margin-right: -40px;
-	margin-left: -40px;
-	width: 84%;
-	z-index: 30;
-}
-
-.fixed:before {
-	-webkit-filter: blur(5px);
+.panel-default .panel-heading {
+	background-color: #00b9f1;
+	background-image: none;
+	font-size: 16px;
+	font-weight: bold;
+	text-indent: -6px;
 }
 
 .dhtmlxslider_dhx_web .dhxsl_runner {
 	background-color: #00B8F1;
 	border: 1px solid #00b8f1;
 	border-radius: 50%;
-	width: 32px;
-	height: 32px;
+	width: 34px;
+	height: 34px;
 	position: absolute;
-	top: -12px !important;
-}
-
-.panel-default .panel-heading {
-	background-color: #ddd;
-	background-image: none;
-	font-size: 24px;
-	font-weight: bold;
-	text-indent: -6px;
+	top: -13px !important;
 }
 
 .dhtmlxslider_dhx_web .dhxsl_container {
 	float: none;
 }
 
-#winkstats {
-	padding: 20px;
-	padding-top: 0px;
+.table-striped tbody tr:nth-of-type(odd) {
+	background-color: #edf9ff;
 }
 
-#winkstats li {
-	font-size: 11px;
-}
-
-.status {
-	float: right;
-	text-transform: capitalize;
-}
-
-.systemname {
-	text-transform: capitalize;
-	font-weight: bold;
-}
-
-.operational .status {
-	color: green;
-}
-
-.partialoutage .status {
-	color: orange;
-}
-
-.investigating .status {
-	color: purple;
+td[id*='Desc'] div {
+	line-height: 40px;
 }
 
 th,td {

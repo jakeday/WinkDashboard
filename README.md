@@ -3,7 +3,7 @@
 
 Feeling let down by the Wink Relay product? Don't feel like pulling your phone out all the time for smart home control? Wish you could just open a web page and control them? Maybe from a Raspberry Pi? Now you can!
 
-![alt text](https://s22.postimg.org/tnhp66tcx/Wink_Dashboard.png "Wink Dashboard")
+![alt text](https://s16.postimg.org/k81x4b0cl/Wink_Dashboard.png "Wink Dashboard")
 
 * * *
 
