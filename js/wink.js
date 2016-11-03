@@ -77,6 +77,8 @@ function populateWinkDevice(wink, row) {
 		strDeviceType = 'propane_tanks';
 	else if('smoke_detector_id' in wink)
 		strDeviceType = 'smoke_detectors';
+	else if('binary_switch_id' in wink)
+		strDeviceType = "binary_switches";
 
 	switch(strDeviceType){
 		case 'light_bulbs':
@@ -105,6 +107,10 @@ function populateWinkDevice(wink, row) {
 
 		case 'smoke_detectors':
 			addSmokeDetector(wink, row);
+			break;
+
+		case 'binary_switches':
+			addBinarySwitch(wink, row);
 			break;
 
 		default:
@@ -462,6 +468,64 @@ function addSmokeDetector(product, row) {
 	imgBattery.width = 32;
 	imgBattery.height = 32;
 	cell.appendChild(imgBattery);
+}
+
+function addBinarySwitch(product, row) {
+	var wink = product;
+	var name = product.name;
+	var prefix = "Device";
+
+	if ('members' in product) {
+		prefix = "Group";
+	}
+
+	var cell = document.getElementById(prefix + "State" + row);
+	var img = document.createElement("img");
+	img.src = "png/binaryswitches/binaryswitches.png";
+	img.width = 48;
+	img.height = 48;
+	cell.appendChild(img);
+	var cell = document.getElementById(prefix + "Desc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	divDesc.appendChild(document.createTextNode(name));
+	cell.appendChild(divDesc);
+	var cell = document.getElementById(prefix + "Switch" + row);
+	if(wink.desired_state.powered)
+		nPowered = 1;
+	else
+		nPowered = 0;
+	mySliderLight[row] = new dhtmlXSlider({
+		parent: cell,
+		size: 150,
+		skin: "dhx_web",
+		tooltip: true,
+		vertical: false,
+		min: 0,
+		max: 1,
+		value: nPowered,
+		step: 1
+	});
+	var lineNext = document.createElement("BR");
+	cell.appendChild(lineNext);
+	var temp_bg = document.createElement("img");
+	temp_bg.style.paddingTop = "5px";
+	temp_bg.src = "png/binaryswitches/binaryswitchlegend.png";
+	temp_bg.style.align = 'left';
+	temp_bg.width = 150;
+	temp_bg.height = 14;
+	cell.appendChild(temp_bg);
+	mySliderLight[row].attachEvent("onSlideEnd", function(newLock){
+		setDevice('binary_switches', wink.binary_switch_id, newLock);
+	});
+	var cell = document.getElementById(prefix + "Current" + row);
+	var divDesc = document.createElement('div');
+	var state = document.createElement("img");
+	state.src = "png/binaryswitches/"+ wink.desired_state.powered + ".png";
+	state.width = 24;
+	state.height = 24;
+	divDesc.appendChild(state);
+	cell.appendChild(divDesc);
 }
 
 function addDefaultDevice(product, row) {
@@ -823,8 +887,21 @@ function setDevice(model, udn, value) {
 				}
 			};
 			break;
+		case "binary_switches":
+			if(value > 0)
+				bPowered = true;
+			else
+				bPowered = false;
+			var deviceTarget = model + "/" + udn;
+			var body = {
+				"desired_state":
+				{
+					"powered":bPowered
+				}
+			};
+			break;
 		default:
-		;
+			break;
 	}
 
 	$.ajax({
