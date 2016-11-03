@@ -53,6 +53,10 @@ function populateWinkGroup(wink, row) {
 			addLock(wink, row);
 			break;
 
+		case 'binary_switch':
+			addBinarySwitch(wink, row);
+			break;
+
 		default:
 			addDefaultDevice(wink, row);
 			break;
@@ -288,7 +292,7 @@ function addLock(product, row) {
 	mySliderLight[row].attachEvent("onSlideEnd", function(newLock){
 		if ('members' in product) {
 			for (child_wink in wink_children)
-				setDevice('locks', wink_children[child_wink].lock_id, newLight);
+				setDevice('locks', wink_children[child_wink].lock_id, newLock);
 		}
 		else
 			setDevice('locks', wink.lock_id, newLock);
@@ -476,6 +480,17 @@ function addBinarySwitch(product, row) {
 	var prefix = "Device";
 
 	if ('members' in product) {
+		var wink_children = [];
+
+		for (device in controlWinks) {
+			for (member in product.members) {
+				if (controlWinks[device].binary_switch_id == product.members[member].object_id) {
+					wink_children.push(controlWinks[device]);
+				}
+			}
+		}
+
+		wink = wink_children[0];
 		prefix = "Group";
 	}
 
@@ -515,8 +530,13 @@ function addBinarySwitch(product, row) {
 	temp_bg.width = 150;
 	temp_bg.height = 14;
 	cell.appendChild(temp_bg);
-	mySliderLight[row].attachEvent("onSlideEnd", function(newLock){
-		setDevice('binary_switches', wink.binary_switch_id, newLock);
+	mySliderLight[row].attachEvent("onSlideEnd", function(newSwitch){
+		if ('members' in product) {
+			for (child_wink in wink_children)
+				setDevice('binary_switches', wink_children[child_wink].binary_switch_id, newSwitch);
+		}
+		else
+			setDevice('binary_switches', wink.binary_switch_id, newSwitch);
 	});
 	var cell = document.getElementById(prefix + "Current" + row);
 	var divDesc = document.createElement('div');
