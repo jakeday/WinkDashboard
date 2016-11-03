@@ -3,11 +3,36 @@ var divLights = [];
 var mySliderLight = [];
 var controlWinks = [];
 var groupWinks = [];
+var loadingDevices = false;
 
 $(function() {
+	saveScrollPosition();
 	fillBody();
 	checkWeather();
+
+	$(window).scroll(function() {
+		clearTimeout($.data(this, "scrollCheck"));
+		$.data(this, "scrollCheck", setTimeout(function() {
+			if (!loadingDevices)
+				saveScrollPosition();
+		}, 250));
+	});
 });
+
+function saveScrollPosition() {
+	localStorage.setItem("scrollposition", $(window).scrollTop());
+}
+
+function getScrollPosition() {
+	if (localStorage.getItem("scrollposition"))
+		return parseInt(localStorage.getItem("scrollposition"));
+	else
+		return 0;
+}
+
+function restoreScrollPoisition() {
+	$(window).scrollTop(getScrollPosition());
+}
 
 function checkWeather() {
 	if(enable_weather) {
@@ -99,8 +124,17 @@ function addHub(product, row) {
 		prefix = "Group";
 	}
 
-	updateHub(wink, row);
-	window.setInterval(function(){updateHub(wink, row)}, 30000);
+	//updateHub(wink, row);
+	//window.setInterval(function(){updateHub(wink, row)}, 30000);
+	var cell = document.getElementById("DeviceState" + row);
+	cell.innerHTML = "";
+	var state = document.createElement("img");
+	state.src = "png/hub/true.png";
+	state.alt = "On-Line";
+	state.id = "hub";
+	state.width = 48;
+	state.height = 48;
+	cell.appendChild(state);
 	var cell = document.getElementById(prefix + "Desc" + row);
 	var divDesc = document.createElement('div');
 	divDesc.style.width = 60;
@@ -673,6 +707,7 @@ function fetchGroups() {
 				++numWinks;
 			}
 
+			document.getElementById("winkResult").innerHTML = "Found " + controlWinks.length + " Wink devices";
 			var winkGroupsTable = document.getElementById("winkGroupsTable");
 			winkGroupsTable.replaceChild(tbody, document.getElementById("winkGroups"));
 			tbody.setAttribute("id", "winkGroups");
@@ -682,12 +717,18 @@ function fetchGroups() {
 			}
 
 			sortTable("winkGroupsTable");
+
+			loadingDevices = false;
+
+			restoreScrollPoisition();
 		}
 	});
 }
 
 function fetchDevices() {
 	document.getElementById("winkResult").innerHTML = "Fetching...";
+
+	loadingDevices = true;
 
 	$.ajax({
 		method: "GET",
