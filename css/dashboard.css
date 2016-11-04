@@ -8,6 +8,7 @@
 body {
 	padding-top: 50px;
 	background-color: #383838;
+	font-family: 'Noto Sans', sans-serif;
 }
 
 .navbar-fixed-top {
@@ -29,6 +30,12 @@ body {
 	border: 1px solid #ececec;
 }
 
+.navbar {
+	min-height: 50px;
+	max-height: 50px;
+	margin-bottom: 20px;
+}
+
 .navbar .container-fluid .navbar-brand {
 	margin-left: 30px;
 }
@@ -45,8 +52,8 @@ body {
 	color: white;
 	display: inline-block;
 	font-size: 25px;
-	top: 6px;
-	margin-right: 15px;
+	margin-left: 10px;
+	margin-right: 10px;
 	cursor: pointer;
 }
 
@@ -58,8 +65,7 @@ body {
 .nav .glyphicon-cloud {
 	color: white;
 	font-size: 25px;
-	top: 6px;
-	margin-right: 5px;
+	margin-right: 10px;
 	cursor: pointer;
 }
 
@@ -87,10 +93,10 @@ body {
 	background-color: #00B8F1;
 	border: 1px solid #00b8f1;
 	border-radius: 50%;
-	width: 34px;
-	height: 34px;
+	width: 42px;
+	height: 42px;
 	position: absolute;
-	top: -13px !important;
+	top: -17px !important;
 }
 
 .dhtmlxslider_dhx_web .dhxsl_container {
@@ -105,7 +111,7 @@ td[id*='Desc'] div {
 	line-height: 40px;
 }
 
-th,td {
+th, td {
 	padding: 5px;
 }
 

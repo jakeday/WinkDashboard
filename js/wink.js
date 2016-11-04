@@ -5,6 +5,32 @@ var controlWinks = [];
 var groupWinks = [];
 var loadingDevices = false;
 
+var deviceTypes = {
+	"air_conditioner_id": "air_conditioners",
+	"binary_switch_id": "binary_switches",
+	"shade_id": "shades",
+	"camera_id": "cameras",
+	"doorbell_id": "doorbells",
+	"garage_door_id": "garage_doors",
+	"light_bulb_id": "light_bulbs",
+	"lock_id": "locks",
+	"key_id": "keys",
+	"cloud_clock_id": "cloud_clocks",
+	"alarm_id": "alarms",
+	"power_strip_id": "power_strips",
+	"piggy_bank_id": "piggy_banks",
+	"deposit_id": "deposits",
+	"refrigerator_id": "refrigerators",
+	"propane_tank_id": "propane_tanks",
+	"remote_id": "remotes",
+	"sensor_pod_id": "sensor_pods",
+	"siren_id": "sirens",
+	"smoke_detector_id": "smoke_detecors",
+	"sprinkler_id": "sprinklers",
+	"thermostat_id": "thermostats",
+	"water_heater_id": "water_heaters"
+};
+
 $(function() {
 	saveScrollPosition();
 	fillBody();
@@ -54,7 +80,7 @@ function populateWinkGroup(wink, row) {
 
 	switch(strDeviceType){
 		case 'light_bulb':
-			addLightBuld(wink, row);
+			addLightBulb(wink, row);
 			break;
 
 		case 'lock':
@@ -74,27 +100,28 @@ function populateWinkGroup(wink, row) {
 }
 
 function populateWinkDevice(wink, row) {
-	if('hub_id' in wink)
-		strDeviceType = 'hubs';
+	var strDeviceTypeFull;
+	var strDeviceType;
 
-	if('light_bulb_id' in wink)
-		strDeviceType = 'light_bulbs';
-	else if('lock_id' in wink)
-		strDeviceType = 'locks';
-	else if('thermostat_id' in wink)
-		strDeviceType = 'thermostats';
-	else if('sensor_pod_id' in wink)
-		strDeviceType = 'sensor_pods';
-	else if('propane_tank_id' in wink)
-		strDeviceType = 'propane_tanks';
-	else if('smoke_detector_id' in wink)
-		strDeviceType = 'smoke_detectors';
-	else if('binary_switch_id' in wink)
-		strDeviceType = "binary_switches";
+	for(var i = 0; i < Object.keys(wink).length; i++) {
+		if(Object.keys(wink)[i] in deviceTypes) {
+			strDeviceTypeFull = Object.keys(wink)[i];
+			break;
+		}
+	}
+
+	if (typeof strDeviceTypeFull == "undefined") {
+		if("hub_id" in wink) {
+			strDeviceTypeFull = "hub_id";
+			strDeviceType = "hubs";
+		}
+	}
+	else
+		strDeviceType = deviceTypes[strDeviceTypeFull];
 
 	switch(strDeviceType){
 		case 'light_bulbs':
-			addLightBuld(wink, row);
+			addLightBulb(wink, row);
 			break;
 
 		case 'locks':
@@ -162,7 +189,7 @@ function addHub(product, row) {
 	cell.appendChild(divDesc);
 }
 
-function addLightBuld(product, row) {
+function addLightBulb(product, row) {
 	var wink = product;
 	var name = product.name;
 	var prefix = "Device";
@@ -354,6 +381,7 @@ function addThermostat(product, row) {
 	var lineNext = document.createElement("BR");
 	var temp_bg = document.createElement("img");
 	temp_bg.style.paddingTop = "5px";
+	temp_bg.style.marginTop = "20px";
 	temp_bg.src = "png/thermostat/thermostatlegend.png";
 	temp_bg.width = 150;
 	temp_bg.height = 14;
