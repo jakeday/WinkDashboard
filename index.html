@@ -39,10 +39,17 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li>
 							<a id="winkResult"></a>
-							<span class="glyphicon glyphicon-refresh" aria-hidden="true" alt="Refresh" onclick="fetchDevices()"></span>
-							<a href="" id="weather">
-								<span class="glyphicon glyphicon-cloud" aria-hidden="true" alt="Weather"></span>
-							</a>
+							<span class="nav-icon glyphicon glyphicon-refresh" aria-hidden="true" alt="Refresh" onclick="fetchDevices()"></span>
+
+							<span id="groups" class="nav-icon glyphicon glyphicon-list-alt" aria-hidden="true" alt="Groups"></span>
+
+							<span id="devices" class="nav-icon glyphicon glyphicon-list" aria-hidden="true" alt="Devices"></span>
+
+							<span id="shortcuts" class="nav-icon glyphicon glyphicon-picture" aria-hidden="true" alt="Shortcuts"></span>
+
+							<span id="robots" class="nav-icon glyphicon glyphicon-user" aria-hidden="true" alt="Robots"></span>
+
+							<span class="nav-icon glyphicon glyphicon-cloud" aria-hidden="true" alt="Weather"></span>
 						</li>
 					</ul>
 				</div>
@@ -50,7 +57,7 @@
 		</nav>
 
 		<div class="container-fluid">
-			<div class="row">
+			<div class="row" id="groupsContainer">
 				<div class="col-sm-12 main">
 					<div class="row panel panel-default">
 						<div class="panel-heading">Groups</div>
@@ -75,7 +82,7 @@
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="row" id="devicesContainer">
 				<div class="col-sm-12 main">
 					<div class="row panel panel-default">
 						<div class="panel-heading">Devices</div>
@@ -100,7 +107,7 @@
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="row" id="shortcutsContainer">
 				<div class="col-sm-12 main">
 					<div class="row panel panel-default">
 						<div class="panel-heading">Shortcuts</div>
@@ -125,7 +132,7 @@
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="row" id="robotsContainer">
 				<div class="col-sm-12 main">
 					<div class="row panel panel-default">
 						<div class="panel-heading">Robots</div>

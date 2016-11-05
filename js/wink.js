@@ -56,6 +56,22 @@ $(function() {
 				saveScrollPosition();
 		}, 250));
 	});
+
+	$("#groups").click(function() {
+		$('html, body').scrollTop($("#groupsContainer").offset().top - 50);
+	});
+
+	$("#devices").click(function() {
+		$('html, body').scrollTop($("#devicesContainer").offset().top - 50);
+	});
+
+	$("#shortcuts").click(function() {
+		$('html, body').scrollTop($("#shortcutsContainer").offset().top - 50);
+	});
+
+	$("#robots").click(function() {
+		$('html, body').scrollTop($("#robotsContainer").offset().top - 50);
+	});
 });
 
 function isLocalStorageSupported() {

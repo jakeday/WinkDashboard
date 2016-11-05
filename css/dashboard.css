@@ -48,25 +48,17 @@ body {
 	width: 50px;
 }
 
-.nav .glyphicon-refresh {
+.nav .nav-icon {
 	color: white;
 	display: inline-block;
 	font-size: 25px;
-	margin-left: 10px;
-	margin-right: 10px;
+	margin: 12px;
 	cursor: pointer;
 }
 
-.nav .glyphicon-refresh:hover {
-	color: #00b8f1;
+.nav .nav-icon:hover {
+	color: #00b9f1;
 	transition: ease all 0.5s;
-}
-
-.nav .glyphicon-cloud {
-	color: white;
-	font-size: 25px;
-	margin-right: 10px;
-	cursor: pointer;
 }
 
 #weather {
