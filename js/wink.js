@@ -1,6 +1,16 @@
 var nLight = [];
+var nLock = [];
+var nPowered = [];
+var nTemp = [];
+var nShade = [];
+var nGarageDoor = [];
 var divLights = [];
 var mySliderLight = [];
+var mySliderLock = [];
+var mySliderSwitch = [];
+var mySliderTemp = [];
+var mySliderShade = [];
+var mySliderGarageDoor = [];
 var controlWinks = [];
 var groupWinks = [];
 var loadingDevices = false;
@@ -152,6 +162,14 @@ function populateWinkDevice(wink, row) {
 			addBinarySwitch(wink, row);
 			break;
 
+		case 'shades':
+			addShades(wink, row);
+			break;
+
+		case 'garage_doors':
+			addGarageDoor(wink, row);
+			break;
+
 		default:
 			addDefaultDevice(wink, row);
 			break;
@@ -211,10 +229,10 @@ function addLightBulb(product, row) {
 
 	var cell = document.getElementById(prefix + "State" + row);
 	var state = document.createElement("img");
-	var bPowered = wink.desired_state.powered;
+	var bLight = wink.desired_state.powered;
 	state.id = "lightbulb";
-	state.src = "png/lights/" + bPowered + ".png";
-	state.alt = bPowered;
+	state.src = "png/lights/" + bLight + ".png";
+	state.alt = bLight;
 	state.width = 48;
 	state.height = 48;
 	cell.appendChild(state);
@@ -304,7 +322,7 @@ function addLock(product, row) {
 		nLock = 1;
 	else
 		nLock = 0;
-	mySliderLight[row] = new dhtmlXSlider({
+	mySliderLock[row] = new dhtmlXSlider({
 		parent: cell,
 		size: 150,
 		skin: "dhx_web",
@@ -324,7 +342,7 @@ function addLock(product, row) {
 	temp_bg.width = 150;
 	temp_bg.height = 14;
 	cell.appendChild(temp_bg);
-	mySliderLight[row].attachEvent("onSlideEnd", function(newLock){
+	mySliderLock[row].attachEvent("onSlideEnd", function(newLock){
 		if ('members' in product) {
 			for (child_wink in wink_children)
 				setDevice('locks', wink_children[child_wink].lock_id, newLock);
@@ -367,7 +385,7 @@ function addThermostat(product, row) {
 	var cell = document.getElementById(prefix + "Switch" + row);
 	var nTemp = wink.desired_state.max_set_point;
 	nTemp = (nTemp * 1.8) + 32;
-	mySliderLight[row] = new dhtmlXSlider({
+	mySliderTemp[row] = new dhtmlXSlider({
 		parent: cell,
 		size: 150,
 		skin: "dhx_web",
@@ -386,10 +404,12 @@ function addThermostat(product, row) {
 	temp_bg.width = 150;
 	temp_bg.height = 14;
 	cell.appendChild(temp_bg);
-	mySliderLight[row].attachEvent("onSlideEnd", function(newTemp){
-		newTemp = (newTemp - 32)/1.8;
-		setDevice("thermostat_id", wink.thermostat_id, newTemp);
-	});
+	if(mySliderTemp.length > 0) {
+		mySliderTemp[row].attachEvent("onSlideEnd", function(newTemp){
+			newTemp = (newTemp - 32)/1.8;
+			setDevice("thermostat_id", wink.thermostat_id, newTemp);
+		});
+	}
 	var cell = document.getElementById(prefix + "Current" + row);
 	var divDesc = document.createElement('div');
 	divDesc.style.width = 60;
@@ -546,7 +566,7 @@ function addBinarySwitch(product, row) {
 		nPowered = 1;
 	else
 		nPowered = 0;
-	mySliderLight[row] = new dhtmlXSlider({
+	mySliderSwitch[row] = new dhtmlXSlider({
 		parent: cell,
 		size: 150,
 		skin: "dhx_web",
@@ -566,18 +586,175 @@ function addBinarySwitch(product, row) {
 	temp_bg.width = 150;
 	temp_bg.height = 14;
 	cell.appendChild(temp_bg);
-	mySliderLight[row].attachEvent("onSlideEnd", function(newSwitch){
-		if ('members' in product) {
-			for (child_wink in wink_children)
-				setDevice('binary_switches', wink_children[child_wink].binary_switch_id, newSwitch);
-		}
-		else
-			setDevice('binary_switches', wink.binary_switch_id, newSwitch);
-	});
+	if(mySliderSwitch.length > 0) {
+		mySliderSwitch[row].attachEvent("onSlideEnd", function(newSwitch){
+			if ('members' in product) {
+				for (child_wink in wink_children)
+					setDevice('binary_switches', wink_children[child_wink].binary_switch_id, newSwitch);
+			}
+			else
+				setDevice('binary_switches', wink.binary_switch_id, newSwitch);
+		});
+	}
 	var cell = document.getElementById(prefix + "Current" + row);
 	var divDesc = document.createElement('div');
 	var state = document.createElement("img");
 	state.src = "png/binaryswitches/"+ wink.desired_state.powered + ".png";
+	state.width = 24;
+	state.height = 24;
+	divDesc.appendChild(state);
+	cell.appendChild(divDesc);
+}
+
+function addShades(product, row) {
+	var wink = product;
+	var name = product.name;
+	var prefix = "Device";
+
+	if ('members' in product) {
+		var wink_children = [];
+
+		for (device in controlWinks) {
+			for (member in product.members) {
+				if (controlWinks[device].shade_id == product.members[member].object_id) {
+					wink_children.push(controlWinks[device]);
+				}
+			}
+		}
+
+		wink = wink_children[0];
+		prefix = "Group";
+	}
+
+	var cell = document.getElementById(prefix + "State" + row);
+	var state = document.createElement("img");
+	var bPosition = wink.desired_state.position;
+	state.id = "lightbulb";
+	state.src = "png/shades/shades.png";
+	state.alt = bPosition;
+	state.width = 48;
+	state.height = 48;
+	cell.appendChild(state);
+	var cell = document.getElementById(prefix + "Desc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	var span = document.createElement("span");
+	divDesc.appendChild(span);
+	divDesc.appendChild(document.createTextNode(name));
+	cell.appendChild(divDesc);
+	var cell = document.getElementById(prefix + "Switch" + row);
+	if(wink.desired_state.position)
+		nShade[row] = (wink.desired_state.position);
+	else
+		nShade[row] = 0;
+		mySliderShade[row] = new dhtmlXSlider({
+			parent: prefix + "Switch" + row,
+			value: nShade[row],
+			tooltip: true,
+			skin: "dhx_web",
+			size: 150,
+			step: 10,
+			min: 0,
+			max: 100
+		});
+	var lineNext = document.createElement("BR");
+	cell.appendChild(lineNext);
+	var temp_bg = document.createElement("img");
+	temp_bg.src = "png/shades/shadeslegend.png";
+	temp_bg.style.paddingTop = "5px";
+	temp_bg.style.align = "left";
+	temp_bg.width = 150;
+	temp_bg.height = 14;
+	cell.appendChild(temp_bg);
+	if(mySliderShade.length > 0) {
+		mySliderShade[row].attachEvent("onSlideEnd", function(newShade){
+			if ('members' in product) {
+				for (child_wink in wink_children)
+					setDevice('shades', wink_children[child_wink].shade_id, newShade);
+			}
+			else
+				setDevice('shades', wink.shade_id, newShade);
+		});
+	}
+	var cell = document.getElementById(prefix + "Current" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	var span = document.createElement("span");
+	divDesc.appendChild(span);
+	divDesc.appendChild(document.createTextNode(nShade[row] + "%"));
+	cell.appendChild(divDesc);
+}
+
+function addGarageDoor(product, row) {
+	var wink = product;
+	var name = product.name;
+	var prefix = "Device";
+
+	if ('members' in product) {
+		var wink_children = [];
+
+		for (device in controlWinks) {
+			for (member in product.members) {
+				if (controlWinks[device].garage_door_id == product.members[member].object_id) {
+					wink_children.push(controlWinks[device]);
+				}
+			}
+		}
+
+		wink = wink_children[0];
+		prefix = "Group";
+	}
+
+	var cell = document.getElementById(prefix + "State" + row);
+	var img = document.createElement("img");
+	img.src = "png/garagedoors/garagedoors.png";
+	img.width = 48;
+	img.height = 48;
+	cell.appendChild(img);
+	var cell = document.getElementById(prefix + "Desc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	divDesc.appendChild(document.createTextNode(name));
+	cell.appendChild(divDesc);
+	var cell = document.getElementById(prefix + "Switch" + row);
+	if(wink.desired_state.powered)
+		nGarageDoor = 1;
+	else
+		nGarageDoor = 0;
+	mySliderGarageDoor[row] = new dhtmlXSlider({
+		parent: cell,
+		size: 150,
+		skin: "dhx_web",
+		tooltip: true,
+		vertical: false,
+		min: 0,
+		max: 1,
+		value: nPowered,
+		step: 1
+	});
+	var lineNext = document.createElement("BR");
+	cell.appendChild(lineNext);
+	var temp_bg = document.createElement("img");
+	temp_bg.style.paddingTop = "5px";
+	temp_bg.src = "png/garagedoors/garagedoorslegend.png";
+	temp_bg.style.align = 'left';
+	temp_bg.width = 150;
+	temp_bg.height = 14;
+	cell.appendChild(temp_bg);
+	if(mySliderGarageDoor.length > 0) {
+		mySliderGarageDoor[row].attachEvent("onSlideEnd", function(newGarageDoor){
+			if ('members' in product) {
+				for (child_wink in wink_children)
+					setDevice('binary_switches', wink_children[child_wink].binary_switch_id, newGarageDoor);
+			}
+			else
+				setDevice('binary_switches', wink.binary_switch_id, newSwitch);
+		});
+	}
+	var cell = document.getElementById(prefix + "Current" + row);
+	var divDesc = document.createElement('div');
+	var state = document.createElement("img");
+	state.src = "png/garagedoors/"+ wink.desired_state.powered + ".png";
 	state.width = 24;
 	state.height = 24;
 	divDesc.appendChild(state);
@@ -906,31 +1083,33 @@ function sortTable(id) {
 function setDevice(model, udn, value) {
 	document.getElementById("winkResult").innerHTML = "Setting...";
 
+	var bValue;
+
 	switch(model) {
 		case "light_bulbs":
 			var deviceTarget = model+ "/" + udn;
 			if(value > 0)
-				bPowered = true;
+				bValue = true;
 			else
-				bPowered = false;
+				bValue = false;
 			value = value/100;
 			var body = {
 				"desired_state":
 				{
-					"powered":bPowered,"brightness":value
+					"powered":bValue,"brightness":value
 				}
 			};
 			break;
 		case "locks":
 			if(value > 0)
-				bLocked = true;
+				bValue = true;
 			else
-				bLocked = false;
+				bValue = false;
 			var deviceTarget = model + "/" + udn;
 			var body = {
 				"desired_state":
 				{
-					"locked":bLocked
+					"locked":bValue
 				}
 			};
 			break;
@@ -939,20 +1118,42 @@ function setDevice(model, udn, value) {
 			var body = {
 				"desired_state":
 				{
-					"mode":"heat_only","powered":true,"modes_allowed":null,"min_set_point":value,"max_set_point":value
+					"mode":"heat_only",
+					"powered":true,
+					"modes_allowed":null,
+					"min_set_point":value,
+					"max_set_point":value
 				}
 			};
 			break;
 		case "binary_switches":
 			if(value > 0)
-				bPowered = true;
+				bValue = true;
 			else
-				bPowered = false;
+				bValue = false;
 			var deviceTarget = model + "/" + udn;
 			var body = {
 				"desired_state":
 				{
-					"powered":bPowered
+					"powered":bValue
+				}
+			};
+			break;
+		case "shades":
+			var deviceTarget = model + "/" + udn;
+			var body = {
+				"desired_state":
+				{
+					"position":value
+				}
+			};
+			break;
+		case "garage_doors":
+			var deviceTarget = model + "/" + udn;
+			var body = {
+				"desired_state":
+				{
+					"position":value
 				}
 			};
 			break;
