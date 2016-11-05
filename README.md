@@ -7,27 +7,27 @@ Feeling let down by the Wink Relay product? Don't feel like pulling your phone o
 
 The following devices are supported. Groups of devices are supported too!
 
-*Air Conditioners
-*Binary Switches
-*Blinds
-*Cameras
-*Doorbells
-*Garage Doors
-*Hubs
-*Light Bulbs
-*Locks
-*Alarms
-*Power Strips
-*Piggy Banks
-*Deposits
-*Refrigerators
-*Propane Tanks
-*Sensors
-*Sirens
-*Smoke Alarms
-*Sprinklers
-*Thermostats
-*Water Heaters
+* Air Conditioners
+* Binary Switches
+* Blinds
+* Cameras
+* Doorbells
+* Garage Doors
+* Hubs
+* Light Bulbs
+* Locks
+* Alarms
+* Power Strips
+* Piggy Banks
+* Deposits
+* Refrigerators
+* Propane Tanks
+* Sensors
+* Sirens
+* Smoke Alarms
+* Sprinklers
+* Thermostats
+* Water Heaters
 
 ![alt text](https://s16.postimg.org/k81x4b0cl/Wink_Dashboard.png "Wink Dashboard")
 
