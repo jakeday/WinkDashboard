@@ -11,6 +11,7 @@ var mySliderSwitch = [];
 var mySliderTemp = [];
 var mySliderShade = [];
 var mySliderGarageDoor = [];
+var mySliderShortcut = [];
 var controlWinks = [];
 var groupWinks = [];
 var robotWinks = [];
@@ -123,6 +124,32 @@ function populateWinkShortcut(wink, row) {
 	divDesc.style.width = 60;
 	divDesc.appendChild(document.createTextNode(wink.name));
 	cell.appendChild(divDesc);
+	var cell = document.getElementById("ShortcutSwitch" + row);
+	mySliderShortcut[row] = new dhtmlXSlider({
+		parent: cell,
+		size: 150,
+		skin: "dhx_web",
+		tooltip: true,
+		vertical: false,
+		min: 0,
+		max: 1,
+		value: 0,
+		step: 1
+	});
+	var lineNext = document.createElement("BR");
+	cell.appendChild(lineNext);
+	var temp_bg = document.createElement("img");
+	temp_bg.style.paddingTop = "5px";
+	temp_bg.src = "png/shortcuts/shortcutlegend.png";
+	temp_bg.style.align = 'left';
+	temp_bg.width = 150;
+	temp_bg.height = 14;
+	cell.appendChild(temp_bg);
+	if(mySliderShortcut.length > 0) {
+		mySliderShortcut[row].attachEvent("onSlideEnd", function(){
+			setShortcut(wink.scene_id);
+		});
+	}
 
 	return;
 }
@@ -1211,6 +1238,30 @@ function sortTable(id) {
 		var tdb = $(b).find('td:eq(1)').text();
 		return tda > tdb ? 1 : tda < tdb ? -1 : 0;
 	}).appendTo($tbody);
+}
+
+function setShortcut(sceneid) {
+	document.getElementById("winkResult").innerHTML = "Setting...";
+
+	$.ajax({
+		method: "POST",
+		url: "https://winkapi.quirky.com/scenes/" + sceneid + "/activate",
+		dataType: "json",
+		async: true,
+		crossDomain: true,
+		headers: { "Authorization": "Bearer " + AccessToken }
+	})
+	.done(function(resp, textStatus, jqXHR) {
+		if (jqXHR.status != 200 && jqXHR.status != 202) {
+			document.getElementById("winkResult").innerHTML = "Error Calling Wink REST API "
+					+ jqXHR.status;
+			return;
+		}
+
+		document.getElementById("winkResult").innerHTML = "Shortcut activated";
+
+		fetchDevices();
+	});
 }
 
 function setDevice(model, udn, value) {
