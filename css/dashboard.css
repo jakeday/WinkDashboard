@@ -63,6 +63,8 @@ body {
 
 #weather {
 	display: none;
+	padding: 0px;
+	margin: 0px;
 }
 
 #winkResult {
