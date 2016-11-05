@@ -14,6 +14,7 @@ var mySliderGarageDoor = [];
 var controlWinks = [];
 var groupWinks = [];
 var loadingDevices = false;
+var scrollPosition = 0;
 
 var deviceTypes = {
 	"air_conditioner_id": "air_conditioners",
@@ -60,8 +61,10 @@ function isLocalStorageSupported() {
 }
 
 function saveScrollPosition() {
+	scrollPosition = $(window).scrollTop();
+
 	if (isLocalStorageSupported())
-		localStorage.setItem("scrollposition", $(window).scrollTop());
+		localStorage.setItem("scrollposition", scrollPosition);
 }
 
 function getScrollPosition() {
@@ -69,13 +72,14 @@ function getScrollPosition() {
 		if (localStorage.getItem("scrollposition"))
 			return parseInt(localStorage.getItem("scrollposition"));
 		else
-			return 0;
+			return scrollPosition;
 	}
+	else
+		return scrollPosition;
 }
 
 function restoreScrollPoisition() {
-	if (isLocalStorageSupported())
-		$(window).scrollTop(getScrollPosition());
+	$(window).scrollTop(getScrollPosition());
 }
 
 function checkWeather() {
