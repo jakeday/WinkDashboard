@@ -13,6 +13,8 @@ var mySliderShade = [];
 var mySliderGarageDoor = [];
 var controlWinks = [];
 var groupWinks = [];
+var robotWinks = [];
+var shortcutWinks = [];
 var loadingDevices = false;
 var scrollPosition = 0;
 
@@ -87,6 +89,26 @@ function checkWeather() {
 		$('#weather').attr('href', weather_path);
 		$('#weather').css('display', 'inline-block');
 	}
+}
+
+function populateWinkRobot(wink, row) {
+	var cell = document.getElementById("RobotDesc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	divDesc.appendChild(document.createTextNode(wink.name));
+	cell.appendChild(divDesc);
+
+	return;
+}
+
+function populateWinkShortcut(wink, row) {
+	var cell = document.getElementById("ShortcutDesc" + row);
+	var divDesc = document.createElement('div');
+	divDesc.style.width = 60;
+	divDesc.appendChild(document.createTextNode(wink.name));
+	cell.appendChild(divDesc);
+
+	return;
 }
 
 function populateWinkGroup(wink, row) {
@@ -979,6 +1001,99 @@ function updateHub(wink, row) {
 	document.getElementById("winkResult").innerHTML = "Found "+ controlWinks.length + " Wink devices";
 }
 
+function fetchRobots() {
+	document.getElementById("winkResult").innerHTML = "Fetching...";
+
+	$.ajax({
+		method: "GET",
+		url: "https://winkapi.quirky.com/users/me/robots",
+		dataType: "json",
+		async: true,
+		crossDomain: true,
+		headers: { "Authorization": "Bearer " + AccessToken }
+	})
+	.done(function(winks, textStatus, jqXHR) {
+		if (jqXHR.status != 200) {
+			document.getElementById("winkResult").innerHTML = "Error Calling Wink REST API " + jqXHR.status + " " + jqXHR.statusText;
+			return;
+		}
+		else {
+			document.getElementById("winkResult").innerHTML = "Calling Wink REST API";
+
+			var tbody = document.createElement("tbody");
+			var numWinks = 0;
+			robotWinks = [];
+
+			for (var i = 0; i < winks.data.length; i++) {
+				robotWinks.push(winks.data[i]);
+				tbody.appendChild(createRows(numWinks, "Robot"));
+				++numWinks;
+			}
+
+			document.getElementById("winkResult").innerHTML = "Found " + controlWinks.length + " Wink devices";
+			var winkRobotsTable = document.getElementById("winkRobotsTable");
+
+			winkRobotsTable.replaceChild(tbody, document.getElementById("winkRobots"));
+			tbody.setAttribute("id", "winkRobots");
+
+			for (var i = 0; i < robotWinks.length; i++) {
+				populateWinkRobot(robotWinks[i], i);
+			}
+
+			sortTable("winkRobotsTable");
+
+			loadingDevices = false;
+
+			restoreScrollPoisition();
+		}
+	});
+}
+
+function fetchShortcuts() {
+	document.getElementById("winkResult").innerHTML = "Fetching...";
+
+	$.ajax({
+		method: "GET",
+		url: "https://winkapi.quirky.com/users/me/scenes",
+		dataType: "json",
+		async: true,
+		crossDomain: true,
+		headers: { "Authorization": "Bearer " + AccessToken }
+	})
+	.done(function(winks, textStatus, jqXHR) {
+		if (jqXHR.status != 200) {
+			document.getElementById("winkResult").innerHTML = "Error Calling Wink REST API " + jqXHR.status + " " + jqXHR.statusText;
+			return;
+		}
+		else {
+			document.getElementById("winkResult").innerHTML = "Calling Wink REST API";
+
+			var tbody = document.createElement("tbody");
+			var numWinks = 0;
+			shortcutWinks = [];
+
+			for (var i = 0; i < winks.data.length; i++) {
+				shortcutWinks.push(winks.data[i]);
+				tbody.appendChild(createRows(numWinks, "Shortcut"));
+				++numWinks;
+			}
+
+			document.getElementById("winkResult").innerHTML = "Found " + controlWinks.length + " Wink devices";
+			var winkShortcutsTable = document.getElementById("winkShortcutsTable");
+			winkShortcutsTable.replaceChild(tbody, document.getElementById("winkShortcuts"));
+			tbody.setAttribute("id", "winkShortcuts");
+
+			for (var i = 0; i < shortcutWinks.length; i++) {
+				populateWinkShortcut(shortcutWinks[i], i);
+			}
+
+			sortTable("winkShortcutsTable");
+
+			fetchRobots();
+		}
+	});
+}
+
 function fetchGroups() {
 	document.getElementById("winkResult").innerHTML = "Fetching...";
 
@@ -1019,9 +1134,7 @@ function fetchGroups() {
 
 			sortTable("winkGroupsTable");
 
-			loadingDevices = false;
-
-			restoreScrollPoisition();
+			fetchShortcuts();
 		}
 	});
 }
