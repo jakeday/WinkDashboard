@@ -29,7 +29,7 @@ The following devices are supported. Groups of devices are supported too!
 * Thermostats
 * Water Heaters
 
-![alt text](https://s16.postimg.org/k81x4b0cl/Wink_Dashboard.png "Wink Dashboard")
+![alt text](https://s22.postimg.org/meneusxsx/Wink_Dashboard.png "Wink Dashboard")
 
 * * *
 
