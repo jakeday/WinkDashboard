@@ -1,5 +1,5 @@
 #Wink Dashboard
-#####Web based solution to control your smart devices connected to you Wink Hub.
+#####Web based solution to control your smart devices connected to your Wink Hub.
 
 Feeling let down by the Wink Relay product? Don't feel like pulling your phone out all the time for smart home control? Wish you could just open a web page and control them? Maybe from a Raspberry Pi? Now you can!
 
@@ -35,7 +35,7 @@ The following devices are supported. Groups of devices are supported too!
 
 ### Configuring your Wink Dashboard
 
-Open `js/config.js` and put in your Wink username/email and password:
+Open `js/config.js` and put in your Wink username/email and password. This is not required, as you will be prompted for login credentials if these are left blank.
 
 ```javascript
 /* WINK CREDENTIALS */
