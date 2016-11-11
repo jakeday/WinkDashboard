@@ -977,7 +977,7 @@ function updateSensors(wink, row) {
 
 	divSensor.appendChild(imgOpened);
 	cell.appendChild(divSensor);
-	document.getElementById("winkResult").innerHTML = "Found " + controlWinks.length + " Wink devices";
+	document.getElementById("winkResult").innerHTML = controlWinks.length + " devices connected";
 }
 
 function updateRefuel(wink, row) {
@@ -1023,7 +1023,7 @@ function updateRefuel(wink, row) {
 	divSensor.appendChild(imgRefuel);
 	cell.appendChild(divSensor);
 
-	document.getElementById("winkResult").innerHTML = "Found " + controlWinks.length + " Wink devices";
+	document.getElementById("winkResult").innerHTML = controlWinks.length + " devices connected";
 }
 
 function updateHub(wink, row) {
@@ -1065,7 +1065,7 @@ function updateHub(wink, row) {
 	else
 		alert("WebSocket are not supported");
 
-	document.getElementById("winkResult").innerHTML = "Found "+ controlWinks.length + " Wink devices";
+	document.getElementById("winkResult").innerHTML = controlWinks.length + " devices connected";
 }
 
 function fetchRobots() {
@@ -1097,7 +1097,7 @@ function fetchRobots() {
 				++numWinks;
 			}
 
-			document.getElementById("winkResult").innerHTML = "Found " + controlWinks.length + " Wink devices";
+			document.getElementById("winkResult").innerHTML = controlWinks.length + " devices connected";
 			var winkRobotsTable = document.getElementById("winkRobotsTable");
 
 			winkRobotsTable.replaceChild(tbody, document.getElementById("winkRobots"));
@@ -1145,7 +1145,7 @@ function fetchShortcuts() {
 				++numWinks;
 			}
 
-			document.getElementById("winkResult").innerHTML = "Found " + controlWinks.length + " Wink devices";
+			document.getElementById("winkResult").innerHTML = controlWinks.length + " devices connected";
 			var winkShortcutsTable = document.getElementById("winkShortcutsTable");
 			winkShortcutsTable.replaceChild(tbody, document.getElementById("winkShortcuts"));
 			tbody.setAttribute("id", "winkShortcuts");
@@ -1190,7 +1190,7 @@ function fetchGroups() {
 				++numWinks;
 			}
 
-			document.getElementById("winkResult").innerHTML = "Found " + controlWinks.length + " Wink devices";
+			document.getElementById("winkResult").innerHTML = controlWinks.length + " devices connected";
 			var winkGroupsTable = document.getElementById("winkGroupsTable");
 			winkGroupsTable.replaceChild(tbody, document.getElementById("winkGroups"));
 			tbody.setAttribute("id", "winkGroups");
@@ -1242,7 +1242,7 @@ function fetchDevices() {
 				}
 			}
 
-			document.getElementById("winkResult").innerHTML = "Found " + controlWinks.length + " Wink devices";
+			document.getElementById("winkResult").innerHTML = controlWinks.length + " devices connected";
 			var winkDevicesTable = document.getElementById("winkDevicesTable");
 			winkDevicesTable.replaceChild(tbody, document.getElementById("winkDevices"));
 			tbody.setAttribute("id", "winkDevices");
