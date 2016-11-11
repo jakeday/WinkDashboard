@@ -1208,9 +1208,14 @@ function fetchDevices() {
 			controlWinks = [];
 
 			for (var i = 0; i < winks.data.length; i++) {
-				controlWinks.push(winks.data[i]);
-				tbody.appendChild(createRows(numWinks, "Device"));
-				++numWinks;
+				if ('parent_object_type' in winks.data[i] && winks.data[i].parent_object_type == "lock") {
+					// do nothing, ignoring keys
+				}
+				else {
+					controlWinks.push(winks.data[i]);
+					tbody.appendChild(createRows(numWinks, "Device"));
+					++numWinks;
+				}
 			}
 
 			document.getElementById("winkResult").innerHTML = "Found " + controlWinks.length + " Wink devices";
@@ -1219,7 +1224,12 @@ function fetchDevices() {
 			tbody.setAttribute("id", "winkDevices");
 
 			for (var i = 0; i < controlWinks.length; i++) {
-				populateWinkDevice(controlWinks[i], i);
+				if ('parent_object_type' in controlWinks[i] && controlWinks[i].parent_object_type == "lock") {
+					// do nothing, ignoring keys
+				}
+				else {
+					populateWinkDevice(controlWinks[i], i);
+				}
 			}
 
 			sortTable("winkDevicesTable");
