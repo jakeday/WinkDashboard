@@ -856,7 +856,7 @@ function addDefaultDevice(product, row) {
 function fillBody() {
 	$.ajax({
 		method: "POST",
-		url: "https://winkapi.quirky.com/oauth2/token",
+		url: "https://api.wink.com/oauth2/token",
 		dataType: "json",
 		async: true,
 		crossDomain: true,
@@ -1049,7 +1049,7 @@ function fetchRobots() {
 
 	$.ajax({
 		method: "GET",
-		url: "https://winkapi.quirky.com/users/me/robots",
+		url: "https://api.wink.com/users/me/robots",
 		dataType: "json",
 		async: true,
 		crossDomain: true,
@@ -1097,7 +1097,7 @@ function fetchShortcuts() {
 
 	$.ajax({
 		method: "GET",
-		url: "https://winkapi.quirky.com/users/me/scenes",
+		url: "https://api.wink.com/users/me/scenes",
 		dataType: "json",
 		async: true,
 		crossDomain: true,
@@ -1142,7 +1142,7 @@ function fetchGroups() {
 
 	$.ajax({
 		method: "GET",
-		url: "https://winkapi.quirky.com/users/me/groups",
+		url: "https://api.wink.com/users/me/groups",
 		dataType: "json",
 		async: true,
 		crossDomain: true,
@@ -1189,7 +1189,7 @@ function fetchDevices() {
 
 	$.ajax({
 		method: "GET",
-		url: "https://winkapi.quirky.com/users/me/wink_devices",
+		url: "https://api.wink.com/users/me/wink_devices",
 		dataType: "json",
 		async: true,
 		crossDomain: true,
@@ -1245,7 +1245,7 @@ function setShortcut(sceneid) {
 
 	$.ajax({
 		method: "POST",
-		url: "https://winkapi.quirky.com/scenes/" + sceneid + "/activate",
+		url: "https://api.wink.com/scenes/" + sceneid + "/activate",
 		dataType: "json",
 		async: true,
 		crossDomain: true,
@@ -1347,7 +1347,7 @@ function setDevice(model, udn, value) {
 
 	$.ajax({
 		method: "PUT",
-		url: "https://winkapi.quirky.com/" + deviceTarget,
+		url: "https://api.wink.com/" + deviceTarget,
 		dataType: "json",
 		async: true,
 		crossDomain: true,
