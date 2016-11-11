@@ -854,6 +854,30 @@ function addDefaultDevice(product, row) {
 }
 
 function fillBody() {
+	if (wink_username === "" || wink_password === "") {
+		prompt_dialog({
+			lm: "Please enter your Wink Email:",
+			callback: function(value) {
+				wink_username = value;
+
+				prompt_dialog({
+					lm: "Please enter your Wink Password:",
+					tm: "password",
+					callback: function(value) {
+						wink_password = value;
+
+						doLogin();
+					}
+				});
+			}
+		});
+	}
+	else {
+		doLogin();
+	}
+}
+
+function doLogin() {
 	$.ajax({
 		method: "POST",
 		url: "https://api.wink.com/oauth2/token",
@@ -1377,3 +1401,43 @@ function setDevice(model, udn, value) {
 		fetchDevices();
 	});
 }
+
+var promptCount = 0;
+window.prompt_dialog = function(options) {
+	var lm = options.lm || "Dialog:",
+		bm = options.bm || "Ok",
+		tm = options.tm || "text";
+
+	if(!options.callback)
+		alert("No callback function provided! Please provide one.");
+
+	var prompt = document.createElement("div");
+	prompt.className = "prompt_dialog";
+
+	var submit = function() {
+		options.callback(input.value);
+		document.body.removeChild(prompt);
+	};
+
+	var label = document.createElement("label");
+	label.textContent = lm;
+	label.for = "prompt_dialog_input" + (++promptCount);
+	prompt.appendChild(label);
+
+	var input = document.createElement("input");
+	input.id = "prompt_dialog_input" + (promptCount);
+	input.type = tm;
+	input.addEventListener("keyup", function(e) {
+		if (e.keyCode == 13) submit();
+	}, false);
+	prompt.appendChild(input);
+
+	var button = document.createElement("button");
+	button.textContent = bm;
+	button.addEventListener("click", submit, false);
+	prompt.appendChild(button);
+
+	document.body.appendChild(prompt);
+
+	input.focus();
+};

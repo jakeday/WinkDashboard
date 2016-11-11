@@ -124,3 +124,24 @@ title {
 img {
 	vertical-align: middle;
 }
+
+.prompt_dialog {
+	position: fixed;
+	left: 50%;
+	top: 15%;
+	margin-left: -150px;
+	padding: 15px;
+	width: 300px;
+	border: 1px solid black;
+	background-color: #e8e9eb;
+}
+
+.prompt_dialog label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.prompt_dialog input {
+	margin-bottom: 10px;
+	width: 270px;
+}
