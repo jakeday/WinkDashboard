@@ -97,6 +97,10 @@ body {
 	float: none;
 }
 
+.table-striped thead tr {
+	background-color: #e8e9eb;
+}
+
 .table-striped tbody tr:nth-of-type(even) {
 	background-color: #fff;
 }
