@@ -16,18 +16,17 @@ body {
 }
 
 .main {
-	padding: 15px;
+	padding: 5px 15px;
 }
 
 @media (min-width: 768px) {
 	.main {
-		padding-right: 40px;
-		padding-left: 40px;
+		padding: 5px 40px;
 	}
 }
 
 .table-responsive {
-	border: 1px solid #ececec;
+	border: 1px solid #e8e9eb;
 }
 
 .navbar {
@@ -49,7 +48,7 @@ body {
 }
 
 .nav .nav-icon {
-	color: white;
+	color: #fff;
 	display: inline-block;
 	font-size: 25px;
 	margin: 12px;
@@ -73,6 +72,7 @@ body {
 
 .panel-default {
 	border-color: #777;
+	margin-bottom: 0px;
 }
 
 .panel-default .panel-heading {
@@ -95,6 +95,10 @@ body {
 
 .dhtmlxslider_dhx_web .dhxsl_container {
 	float: none;
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+	background-color: #fff;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
