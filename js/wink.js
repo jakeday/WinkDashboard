@@ -1085,9 +1085,14 @@ function fetchRobots() {
 			robotWinks = [];
 
 			for (var i = 0; i < winks.data.length; i++) {
-				robotWinks.push(winks.data[i]);
-				tbody.appendChild(createRows(numWinks, "Robot"));
-				++numWinks;
+				if (winks.data[i].name == "Aux Active Alert" && winks.data[i].automation_mode == "aux_active_notification") {
+					// ignore the default aux notification robot
+				}
+				else {
+					robotWinks.push(winks.data[i]);
+					tbody.appendChild(createRows(numWinks, "Robot"));
+					++numWinks;
+				}
 			}
 
 			document.getElementById("winkResult").innerHTML = controlWinks.length + " devices connected";
