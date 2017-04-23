@@ -29,7 +29,7 @@ The following devices are supported. Groups of devices are supported too!
 * Thermostats
 * Water Heaters
 
-![alt text](https://s22.postimg.org/meneusxsx/Wink_Dashboard.png "Wink Dashboard")
+![alt text](https://s10.postimg.org/686g07xbd/Wink_Dashboard.png "Wink Dashboard")
 
 * * *
 
@@ -62,3 +62,5 @@ https://www.raspberrypi.org/documentation/remote-access/web-server/apache.md
 Project is a cleaned up, slimmed down, and enhanced version of WinkPost (https://github.com/davidgruhin/WinkPost).
 
 Bitcoin donations appreciated! 1JkpbAJ41W6SUjH9vCRDpHNNpecjPK3Zid
+
+PayPal donations appreciated as well! Contact me for details!
