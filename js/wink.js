@@ -436,7 +436,15 @@ function addThermostat(product, row) {
 	}
 
 	var cell = document.getElementById(prefix + "State" + row);
-	var nTemp = wink.desired_state.max_set_point;
+	var minTemp = wink.desired_state.min_set_point;
+	var maxTemp = wink.desired_state.max_set_point;
+	var thermMode = wink.desired_state.mode;
+	if (thermMode == "cool_only")
+		var nTemp = maxTemp;
+	else if (thermMode == "heat_only")
+		var nTemp = minTemp;
+	else
+		var nTemp = wink.last_reading.temperature;
 	nTemp = (nTemp * 1.8) + 32; // COMMENT THIS LINE OUT FOR CELSIUS
 	var img = document.createElement("img");
 	img.src = "png/thermostat/thermostat.png";
@@ -450,7 +458,7 @@ function addThermostat(product, row) {
 	cell.appendChild(divDesc);
 	var cell = document.getElementById(prefix + "Switch" + row);
 	var nTemp = wink.desired_state.max_set_point;
-	nTemp = (nTemp * 1.8) + 32;
+	nTemp = (nTemp * 1.8) + 32; // COMMENT THIS LINE OUT FOR CELSIUS
 	mySliderTemp[row] = new dhtmlXSlider({
 		parent: cell,
 		size: 150,
@@ -471,8 +479,8 @@ function addThermostat(product, row) {
 	cell.appendChild(temp_bg);
 	if(mySliderTemp.length > 0) {
 		mySliderTemp[row].attachEvent("onSlideEnd", function(newTemp){
-			newTemp = (newTemp - 32)/1.8;
-			setDevice("thermostat_id", wink.thermostat_id, newTemp);
+			newTemp = (newTemp - 32)/1.8; // COMMENT THIS LINE OUT FOR CELSIUS
+			setDevice("thermostat_id", wink.thermostat_id, [thermMode, newTemp]);
 		});
 	}
 	var cell = document.getElementById(prefix + "Current" + row);
@@ -1334,11 +1342,11 @@ function setDevice(model, udn, value) {
 			var body = {
 				"desired_state":
 				{
-					"mode":"heat_only",
+					"mode":value[0],
 					"powered":true,
 					"modes_allowed":null,
-					"min_set_point":value,
-					"max_set_point":value
+					"min_set_point":value[1],
+					"max_set_point":value[1]
 				}
 			};
 			break;
