@@ -139,7 +139,6 @@ function populateWinkShortcut(wink, row) {
 	var lineNext = document.createElement("BR");
 	cell.appendChild(lineNext);
 	var temp_bg = document.createElement("img");
-	temp_bg.style.paddingTop = "5px";
 	temp_bg.src = "png/shortcuts/shortcutlegend.png";
 	temp_bg.style.align = 'left';
 	temp_bg.width = 150;
@@ -331,7 +330,6 @@ function addLightBulb(product, row) {
 	cell.appendChild(lineNext);
 	var temp_bg = document.createElement("img");
 	temp_bg.src = "png/lights/lightlegend.png";
-	temp_bg.style.paddingTop = "5px";
 	temp_bg.style.align = "left";
 	temp_bg.width = 150;
 	temp_bg.height = 14;
@@ -405,7 +403,6 @@ function addLock(product, row) {
 	var lineNext = document.createElement("BR");
 	cell.appendChild(lineNext);
 	var temp_bg = document.createElement("img");
-	temp_bg.style.paddingTop = "5px";
 	temp_bg.src = "png/locks/locklegend.png";
 	temp_bg.style.align = 'left';
 	temp_bg.width = 150;
@@ -467,7 +464,6 @@ function addThermostat(product, row) {
 	});
 	var lineNext = document.createElement("BR");
 	var temp_bg = document.createElement("img");
-	temp_bg.style.paddingTop = "5px";
 	temp_bg.style.marginTop = "20px";
 	temp_bg.src = "png/thermostat/thermostatlegend.png";
 	temp_bg.width = 150;
@@ -649,7 +645,6 @@ function addBinarySwitch(product, row) {
 	var lineNext = document.createElement("BR");
 	cell.appendChild(lineNext);
 	var temp_bg = document.createElement("img");
-	temp_bg.style.paddingTop = "5px";
 	temp_bg.src = "png/binaryswitches/binaryswitchlegend.png";
 	temp_bg.style.align = 'left';
 	temp_bg.width = 150;
@@ -730,7 +725,6 @@ function addShades(product, row) {
 	cell.appendChild(lineNext);
 	var temp_bg = document.createElement("img");
 	temp_bg.src = "png/shades/shadeslegend.png";
-	temp_bg.style.paddingTop = "5px";
 	temp_bg.style.align = "left";
 	temp_bg.width = 150;
 	temp_bg.height = 14;
@@ -804,7 +798,6 @@ function addGarageDoor(product, row) {
 	var lineNext = document.createElement("BR");
 	cell.appendChild(lineNext);
 	var temp_bg = document.createElement("img");
-	temp_bg.style.paddingTop = "5px";
 	temp_bg.src = "png/garagedoors/garagedoorslegend.png";
 	temp_bg.style.align = 'left';
 	temp_bg.width = 150;

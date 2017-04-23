@@ -87,10 +87,10 @@ body {
 	background-color: #00B8F1;
 	border: 1px solid #00b8f1;
 	border-radius: 50%;
-	width: 42px;
-	height: 42px;
+	width: 32px;
+	height: 32px;
 	position: absolute;
-	top: -17px !important;
+	top: -14px !important;
 }
 
 .dhtmlxslider_dhx_web .dhxsl_container {
