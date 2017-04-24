@@ -941,7 +941,8 @@ function updateSensors(wink, row) {
 	imgBattery.alt = wink.last_reading.battery;
 	imgBattery.width = 32;
 	imgBattery.height = 32;
-	divSensor.appendChild(imgBattery);
+	if (imgBattery.src != "")
+		divSensor.appendChild(imgBattery);
 	imgOpened = document.createElement('img');
 
 	if(wink.name.search("Door") > 0) {
@@ -976,7 +977,8 @@ function updateSensors(wink, row) {
 	imgOpened.width = 32;
 	imgOpened.height = 32;
 
-	divSensor.appendChild(imgOpened);
+	if (imgOpened.src != "")
+		divSensor.appendChild(imgOpened);
 	cell.appendChild(divSensor);
 	document.getElementById("winkResult").innerHTML = controlWinks.length + " devices connected";
 }
